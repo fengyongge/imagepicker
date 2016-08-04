@@ -1,0 +1,101 @@
+package com.zzti.fengongge.imagepicker.control;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+
+import com.zzti.fengongge.imagepicker.PhotoSelectorActivity;
+import com.zzti.fengongge.imagepicker.model.AlbumModel;
+import com.zzti.fengongge.imagepicker.model.PhotoModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * Created by fengyongge on 2016/5/24
+ */
+@SuppressLint("HandlerLeak")
+public class PhotoSelectorDomain {
+	private AlbumController albumController;
+	public PhotoSelectorDomain(Context context) {
+		albumController = new AlbumController(context);
+	}
+	public void getReccent(final PhotoSelectorActivity.OnLocalReccentListener listener) {
+		final Handler handler = new Handler() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handleMessage(Message msg) {
+				List<PhotoModel> temp_photos = (List<PhotoModel>) msg.obj;
+				List<PhotoModel> photos = new ArrayList<PhotoModel>();
+				for (int i = 0; i < temp_photos.size(); i++) {
+					if (!temp_photos.get(i).getOriginalPath().contains("ShareSDK")) {
+						photos.add(temp_photos.get(i));
+					}
+				}
+				listener.onPhotoLoaded(photos);
+			}
+		};
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				List<PhotoModel> photos = albumController.getCurrent();
+				Message msg = new Message();
+				msg.obj = photos;
+				handler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	/** 获取相册列表 */
+	public void updateAlbum(final PhotoSelectorActivity.OnLocalAlbumListener listener) {
+		final Handler handler = new Handler() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handleMessage(Message msg) {
+				List<AlbumModel> albums = (List<AlbumModel>) msg.obj;
+				int index = 0;
+				for (int i = 0; i < albums.size(); i++) {
+					if (albums.get(i).getName().trim().equals("images")) {
+						index = i;
+					}
+				}
+				albums.remove(index);
+
+
+				listener.onAlbumLoaded(albums);
+			}
+		};
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				List<AlbumModel> albums = albumController.getAlbums();
+				Message msg = new Message();
+				msg.obj = albums;
+				handler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	/** 获取单个相册下的所有照片信息 */
+	public void getAlbum(final String name, final PhotoSelectorActivity.OnLocalReccentListener listener) {
+		final Handler handler = new Handler() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handleMessage(Message msg) {
+				listener.onPhotoLoaded((List<PhotoModel>) msg.obj);
+			}
+		};
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				List<PhotoModel> photos = albumController.getAlbum(name);
+				Message msg = new Message();
+				msg.obj = photos;
+				handler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+}
