@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.view;
+package com.zzti.fengyongge.imagepicker.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzti.fengongge.imagepicker.R;
-import com.zzti.fengongge.imagepicker.model.AlbumModel;
+import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 
 /**
  * Created by fengyongge on 2016/5/24

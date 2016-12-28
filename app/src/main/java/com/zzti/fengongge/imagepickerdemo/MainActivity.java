@@ -16,10 +16,10 @@ import android.widget.ListAdapter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.zzti.fengongge.imagepicker.PhotoPreviewActivity;
-import com.zzti.fengongge.imagepicker.PhotoSelectorActivity;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
-import com.zzti.fengongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
+import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 import com.zzti.fengongge.imagepickerdemo.model.UploadGoodsBean;
 import com.zzti.fengongge.imagepickerdemo.util.Config;
 import com.zzti.fengongge.imagepickerdemo.util.DbTOPxUtil;
@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("pics",(Serializable)single_photos);
+						bundle.putSerializable("photos",(Serializable)single_photos);
 						bundle.putInt("position", position);
 						bundle.putString("save","save");
 						CommonUtils.launchActivity(MainActivity.this, PhotoPreviewActivity.class, bundle);

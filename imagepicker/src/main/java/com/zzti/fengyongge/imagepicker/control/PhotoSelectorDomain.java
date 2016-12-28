@@ -1,13 +1,13 @@
-package com.zzti.fengongge.imagepicker.control;
+package com.zzti.fengyongge.imagepicker.control;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.zzti.fengongge.imagepicker.PhotoSelectorActivity;
-import com.zzti.fengongge.imagepicker.model.AlbumModel;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
+import com.zzti.fengyongge.imagepicker.model.AlbumModel;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +61,9 @@ public class PhotoSelectorDomain {
 						index = i;
 					}
 				}
-				albums.remove(index);
-
-
+				if(albums.size()>0){
+					albums.remove(index);
+				}
 				listener.onAlbumLoaded(albums);
 			}
 		};

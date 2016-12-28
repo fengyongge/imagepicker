@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.control;
+package com.zzti.fengyongge.imagepicker.control;
 
 
 import android.content.ContentResolver;
@@ -8,8 +8,8 @@ import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.MediaColumns;
 
-import com.zzti.fengongge.imagepicker.model.AlbumModel;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.model.AlbumModel;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

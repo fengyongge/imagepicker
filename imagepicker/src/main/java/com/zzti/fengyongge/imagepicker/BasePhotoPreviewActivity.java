@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker;
+package com.zzti.fengyongge.imagepicker;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,9 +13,10 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
-import com.zzti.fengongge.imagepicker.util.AnimationUtil;
-import com.zzti.fengongge.imagepicker.view.PhotoPreview;
+import com.zzti.fengongge.imagepicker.R;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.AnimationUtil;
+import com.zzti.fengyongge.imagepicker.view.PhotoPreview;
 
 import java.util.List;
 

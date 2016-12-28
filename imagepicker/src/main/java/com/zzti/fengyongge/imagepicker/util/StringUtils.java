@@ -2,7 +2,7 @@
  * Copyright (c) 2016, ZCJ All Rights Reserved.
  * Project Name: zcj_android-V0.21
  */
-package com.zzti.fengongge.imagepicker.util;
+package com.zzti.fengyongge.imagepicker.util;
 
 
 public class StringUtils {

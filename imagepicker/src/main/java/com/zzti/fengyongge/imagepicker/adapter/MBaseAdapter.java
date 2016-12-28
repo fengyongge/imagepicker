@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.adapter;
+package com.zzti.fengyongge.imagepicker.adapter;
 
 import android.content.Context;
 import android.view.View;

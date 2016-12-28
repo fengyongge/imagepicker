@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.util;
+package com.zzti.fengyongge.imagepicker.util;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;

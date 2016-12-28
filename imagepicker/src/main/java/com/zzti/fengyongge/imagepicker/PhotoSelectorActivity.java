@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker;
+package com.zzti.fengyongge.imagepicker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,17 +22,18 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.zzti.fengongge.imagepicker.adapter.AlbumAdapter;
-import com.zzti.fengongge.imagepicker.adapter.PhotoSelectorAdapter;
-import com.zzti.fengongge.imagepicker.control.PhotoSelectorDomain;
-import com.zzti.fengongge.imagepicker.model.AlbumModel;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
-import com.zzti.fengongge.imagepicker.util.AnimationUtil;
-import com.zzti.fengongge.imagepicker.util.CommonUtils;
-import com.zzti.fengongge.imagepicker.util.FileUtils;
-import com.zzti.fengongge.imagepicker.util.ImageUtils;
-import com.zzti.fengongge.imagepicker.util.StringUtils;
-import com.zzti.fengongge.imagepicker.view.SelectPhotoItem;
+import com.zzti.fengongge.imagepicker.R;
+import com.zzti.fengyongge.imagepicker.adapter.AlbumAdapter;
+import com.zzti.fengyongge.imagepicker.adapter.PhotoSelectorAdapter;
+import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
+import com.zzti.fengyongge.imagepicker.model.AlbumModel;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.AnimationUtil;
+import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.util.FileUtils;
+import com.zzti.fengyongge.imagepicker.util.ImageUtils;
+import com.zzti.fengyongge.imagepicker.util.StringUtils;
+import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -174,12 +175,12 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 				@Override
 				public void run() {
 					for (int i = 0; i < selected.size(); i++) {
-						//防止拍照图片角度发生变化
+						//防止拍照图片角度发生变化(三星)
 						int degree = ImageUtils.getBitmapDegree(selected.get(i).getOriginalPath());
 						if (degree == 0) {
-							cropImage = cropImage(ImageUtils.rotateBitmapByDegree(ImageUtils.getimage(selected.get(i).getOriginalPath()), degree));
-						} else {
 							cropImage = cropImage(ImageUtils.getimage(selected.get(i).getOriginalPath()));
+						} else {
+							cropImage = cropImage(ImageUtils.rotateBitmapByDegree(ImageUtils.getimage(selected.get(i).getOriginalPath()), degree));
 						}
 						if (StringUtils.isNotEmpty(cropImage)) {
 							img_path.add(cropImage);

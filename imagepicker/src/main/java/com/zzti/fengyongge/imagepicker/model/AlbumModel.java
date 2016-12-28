@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.model;
+package com.zzti.fengyongge.imagepicker.model;
 
 
 /**

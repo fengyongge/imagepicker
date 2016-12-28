@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.zzti.fengongge.imagepicker.PhotoPreviewActivity"></activity>
-        <activity android:name="com.zzti.fengongge.imagepicker.PhotoSelectorActivity"></activity>
+        <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>
+        <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>
     </application>
 
 </manifest>

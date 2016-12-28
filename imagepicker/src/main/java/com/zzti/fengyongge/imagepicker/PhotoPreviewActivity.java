@@ -1,10 +1,10 @@
-package com.zzti.fengongge.imagepicker;
+package com.zzti.fengyongge.imagepicker;
 
 import android.os.Bundle;
 
-import com.zzti.fengongge.imagepicker.control.PhotoSelectorDomain;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
-import com.zzti.fengongge.imagepicker.util.StringUtils;
+import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

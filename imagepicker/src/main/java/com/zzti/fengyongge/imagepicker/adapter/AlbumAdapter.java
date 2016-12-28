@@ -1,10 +1,10 @@
-package com.zzti.fengongge.imagepicker.adapter;
+package com.zzti.fengyongge.imagepicker.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import com.zzti.fengongge.imagepicker.model.AlbumModel;
-import com.zzti.fengongge.imagepicker.view.AlbumItem;
+import com.zzti.fengyongge.imagepicker.model.AlbumModel;
+import com.zzti.fengyongge.imagepicker.view.AlbumItem;
 import java.util.ArrayList;
 
 

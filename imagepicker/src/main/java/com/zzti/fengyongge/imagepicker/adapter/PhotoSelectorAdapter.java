@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.adapter;
+package com.zzti.fengyongge.imagepicker.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.TextView;
 
 import com.zzti.fengongge.imagepicker.R;
-import com.zzti.fengongge.imagepicker.model.PhotoModel;
-import com.zzti.fengongge.imagepicker.util.StringUtils;
-import com.zzti.fengongge.imagepicker.view.SelectPhotoItem;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.StringUtils;
+import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.util.ArrayList;
 

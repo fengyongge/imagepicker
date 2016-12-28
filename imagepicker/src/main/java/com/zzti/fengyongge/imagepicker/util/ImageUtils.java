@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepicker.util;
+package com.zzti.fengyongge.imagepicker.util;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -37,20 +37,6 @@ public class ImageUtils {
     public static final int GET_IMAGE_FROM_PHONE = 5002;
     public static Uri imageUriFromCamera;
     private static File image_file;
-
-    public static void openCameraImage(final Activity activity) {
-        ImageUtils.imageUriFromCamera = ImageUtils.createImagePathUri(activity);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, ImageUtils.imageUriFromCamera);
-        activity.startActivityForResult(intent, ImageUtils.GET_IMAGE_BY_CAMERA);
-    }
-
-    public static void openLocalImage(final Activity activity) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        activity.startActivityForResult(intent, ImageUtils.GET_IMAGE_FROM_PHONE);
-    }
 
     /**
      * 创建一条图片地址uri,用于保存拍照后的照片
@@ -146,38 +132,8 @@ public class ImageUtils {
 
                     }
                 });
-
-    }
-
-    public static void loadImage(final Context context, Bitmap bitmap) {
-        try {
-            if (Environment.getExternalStorageState().equals(
-                    Environment.MEDIA_MOUNTED)) {
-                image_file = new File(
-                        Environment.getExternalStorageDirectory(),
-                        (Math.round((Math.random() * 9 + 1) * 100000)) + ".jpg");
-            } else {
-                image_file = new File("/data/data/com.zzti.fsuper/image",
-                        (Math.round((Math.random() * 9 + 1) * 100000)) + ".jpg");
-                if (!image_file.exists()) {
-                    image_file.mkdirs();
-                }
             }
-            FileOutputStream out = new FileOutputStream(image_file);
-            if (bitmap != null) {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                out.flush();
-                out.close();
-                bitmap.recycle();
-                bitmap = null;
-            }
-            scanPhoto(context, image_file.getAbsolutePath());
 
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-
-    }
 
     //压缩图片
     public static Bitmap getimage(String srcPath) {
