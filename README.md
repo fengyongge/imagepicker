@@ -1,10 +1,10 @@
 # imagepicker(图片选择器)
-##图片选择器简介
+## 图片选择器简介
 * 从相册里面选择图片或者拍照获取照片
 * 浏览所选图片
 * 保存所选图片
 
-##如何引用
+## 如何引用
 * 配置gradle依赖
 ```java
 compile 'com.zzti.fengyongge:imagepicker:1.0'
@@ -22,7 +22,7 @@ compile 'com.zzti.fengyongge:imagepicker:1.0'
 <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>//预览图片
 ```
 
-##如何使用
+## 如何使用
 * 拍照或者从图库选择图片
 ```java
 Intent intent = new Intent(MainActivity.this, PhotoSelectorActivity.class);
@@ -59,12 +59,12 @@ bundle.putInt("position", position);//position预览图片地址
 bundle.putString("save","save");//save表示可以保存预览图片
 CommonUtils.launchActivity(MainActivity.this, PhotoPreviewActivity.class, bundle);
 ```	
-##实际效果
+## 实际效果
 ![](https://raw.githubusercontent.com/917386389/imagepickerdemo/master/app/src/4.gif)
 
 
 
-##关于作者
+## 关于作者
 ```java
 Log.i("name", "fsuper");
 Log.i("email", "fengyongge98@gmail.com");
@@ -72,6 +72,7 @@ Log.i("motto1", "可以让步，却不可以退缩，可以羞涩，却不可以
 Log.i("motto2", "纸上得来终觉浅 绝知此事要躬行");
 ```	
 
+## License
 ```
 Copyright 2016 fengyongge
 
