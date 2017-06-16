@@ -32,7 +32,7 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 	protected List<PhotoModel> photos;
 	protected int current;
 	private Boolean is_save;
-	private Boolean is_chat;
+	protected boolean isUp;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,25 +45,11 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		btnBack.setOnClickListener(this);
 		mViewPager.setOnPageChangeListener(this);
 		overridePendingTransition(R.anim.activity_alpha_action_in, 0); // 渐入效果
-	}
 
-	/** 绑定数据，更新界面 */
-	protected void bindData(Boolean is_save) {
-		this.is_save = is_save;
-		mViewPager.setAdapter(mPagerAdapter);
-		mViewPager.setCurrentItem(current);
+		layoutTop.setVisibility(View.GONE);
 	}
 
 
-	protected void setIs_Chat(Boolean is_chat) {
-		this.is_chat = is_chat;
-		if (is_chat) {
-			layoutTop.setVisibility(View.GONE);
-		}
-	}
-
-	
-	
 	private PagerAdapter mPagerAdapter = new PagerAdapter() {
 		@Override
 		public int getCount() {
@@ -78,7 +64,7 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		public View instantiateItem(final ViewGroup container, final int position) {
 			PhotoPreview photoPreview = new PhotoPreview(BasePhotoPreviewActivity.this);
 			((ViewPager) container).addView(photoPreview);
-			photoPreview.loadImage(photos.get(position),is_save,is_chat);
+			photoPreview.loadImage(photos.get(position),is_save);
 			photoPreview.setOnClickListener(photoItemClickListener);
 			return photoPreview;
 		}
@@ -94,7 +80,7 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		}
 
 	};
-	protected boolean isUp;
+
 
 	@Override
 	public void onClick(View v) {
@@ -137,5 +123,14 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 			}
 		}
 	};
+
+
+
+	/** 绑定数据，更新界面 */
+	protected void bindData(Boolean is_save) {
+		this.is_save = is_save;
+		mViewPager.setAdapter(mPagerAdapter);
+		mViewPager.setCurrentItem(current);
+	}
 	
 }

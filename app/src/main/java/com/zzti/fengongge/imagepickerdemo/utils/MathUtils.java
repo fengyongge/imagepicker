@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zzti.fengongge.imagepickerdemo.util;
+package com.zzti.fengongge.imagepickerdemo.utils;
 
 import android.graphics.PointF;
 import android.view.MotionEvent;

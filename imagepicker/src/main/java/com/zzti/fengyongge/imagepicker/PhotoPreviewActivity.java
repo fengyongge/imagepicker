@@ -40,7 +40,7 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 			} else {
 				photoSelectorDomain.getAlbum(albumName, this);
 			}
-		}else if(extras.containsKey("save")){
+		}else if(extras.containsKey("save")){ // 是否保存（一般保存网络图片，本地图片只能查看）
 			List<PhotoModel> pics = (List<PhotoModel>) extras.getSerializable("pics");
 			int position = extras.getInt("position");
 			List<PhotoModel> photos = new ArrayList<PhotoModel>();
@@ -56,7 +56,6 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 	public void onPhotoLoaded(List<PhotoModel> photos) {
 		this.photos = photos;
 		updatePercent();
-		setIs_Chat(false);
 		bindData(false); // 更新界面
 	}
 

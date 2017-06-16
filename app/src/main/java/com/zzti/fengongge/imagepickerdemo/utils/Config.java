@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepickerdemo.util;
+package com.zzti.fengongge.imagepickerdemo.utils;
 
 import android.app.Activity;
 import android.content.Context;

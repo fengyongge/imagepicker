@@ -7,34 +7,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
 
         <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:gravity="center|left"
-            android:paddingLeft="10dp"
-            android:text="添加照片" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp" >
-
-        <com.zzti.fengongge.imagepickerdemo.view.MyGridView
-            android:id="@+id/my_goods_GV"
-            android:layout_width="fill_parent"
+            android:id="@+id/tvAddPic"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:numColumns="4" />
+            android:textSize="18sp"
+            android:text="添加图片"
+            android:layout_marginTop="20dp"
+            />
+
+
+        <TextView
+            android:id="@+id/tvPreView"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="预览网络图片"
+            />
+
+
     </LinearLayout>
+
+
 
 </LinearLayout>

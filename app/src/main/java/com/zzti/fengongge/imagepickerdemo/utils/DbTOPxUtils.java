@@ -1,11 +1,11 @@
-package com.zzti.fengongge.imagepickerdemo.util;
+package com.zzti.fengongge.imagepickerdemo.utils;
 
 import android.content.Context;
 
 /**
  * Created by fengyongge on 2016/5/23 0023.
  */
-public class DbTOPxUtil {
+public class DbTOPxUtils {
 
     /**
      * 根据手机的分辨率从 dip 的单位 转成为 px(像素)

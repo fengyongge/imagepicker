@@ -5,6 +5,10 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+/**
+ * @author fengyongge
+ * @Description
+ */
 public class MyGridView extends GridView {
 
 	public MyGridView(Context context) {

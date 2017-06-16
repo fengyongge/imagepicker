@@ -58,7 +58,7 @@
             android:layout_height="@dimen/albumitem_image_height"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_choice_green" />
+            android:src="@drawable/ic_choice_red" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.zzti.fengyongge.imagepicker.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,8 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.zzti.fengongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
+
+import java.util.logging.Logger;
 
 
 public class PhotoPreview extends LinearLayout implements OnClickListener {
@@ -60,7 +63,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 		this(context);
 	}
 
-	public void loadImage(PhotoModel photoModel, Boolean is_save, Boolean is_chat) {
+	public void loadImage(PhotoModel photoModel, Boolean is_save) {
 		is_chat=false;
 		this.is_chat=is_chat;
 
@@ -72,7 +75,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 		
 		if (is_save) {
 			save_bt.setVisibility(View.VISIBLE);
-			loadImage("file://" + photoModel.getOriginalPath());
+			loadImage(photoModel.getOriginalPath());
 		} else {
 			save_bt.setVisibility(View.GONE);
 			loadImage("file://" + photoModel.getOriginalPath());
