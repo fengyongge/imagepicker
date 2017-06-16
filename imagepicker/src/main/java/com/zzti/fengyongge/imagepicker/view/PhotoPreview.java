@@ -64,15 +64,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 	}
 
 	public void loadImage(PhotoModel photoModel, Boolean is_save) {
-		is_chat=false;
-		this.is_chat=is_chat;
 
-		if (is_chat) {
-			ivContent.setClickable(true);
-		}else {
-			ivContent.setClickable(false);
-		}
-		
 		if (is_save) {
 			save_bt.setVisibility(View.VISIBLE);
 			loadImage(photoModel.getOriginalPath());

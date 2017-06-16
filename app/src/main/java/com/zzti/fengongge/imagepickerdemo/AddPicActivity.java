@@ -33,12 +33,12 @@ import java.util.List;
  * @Description
  */
 public class AddPicActivity extends AppCompatActivity {
-      
-        private ArrayList<UploadGoodsBean> img_uri = new ArrayList<UploadGoodsBean>();
-        private List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
-        GridImgAdapter gridImgsAdapter;
-        private MyGridView my_imgs_GV;
-        private int screen_widthOffset;
+
+    private List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
+    private ArrayList<UploadGoodsBean> img_uri = new ArrayList<UploadGoodsBean>();
+    GridImgAdapter gridImgsAdapter;
+    private MyGridView my_imgs_GV;
+    private int screen_widthOffset;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +143,7 @@ public class AddPicActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("photos",(Serializable)single_photos);
                             bundle.putInt("position", position);
-                            bundle.putString("save","save");
+                            bundle.putBoolean("isSave",false);
                             CommonUtils.launchActivity(AddPicActivity.this, PhotoPreviewActivity.class, bundle);
                         }
                     });

@@ -30,6 +30,7 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class ImageUtils {
 
@@ -90,23 +91,26 @@ public class ImageUtils {
                                                   Bitmap loadedImage) {
 
                         try {
+                            image_file = new File(Environment.getExternalStorageDirectory(), "imagepicker");
+                            if (!image_file.exists()) {
+                                image_file.mkdirs();
+                            }else{
 
-                            if (Environment.getExternalStorageState().equals(
-                                    Environment.MEDIA_MOUNTED)) {
-                                image_file = new File(
-                                        Environment
-                                                .getExternalStorageDirectory()+"/imagepicker",
-                                        (Math.round((Math.random() * 9 + 1) * 100000))
-                                                + ".jpg");
+                                if (Environment.getExternalStorageState().equals(
+                                        Environment.MEDIA_MOUNTED)) {
+                                    image_file = new File(
+                                            Environment.getExternalStorageDirectory()+"/imagepicker",
+                                            (Math.round((Math.random() * 9 + 1) * 100000)) + ".jpg");
 
-                            } else {
-                                image_file = new File(
-                                        "/data/data/com.zzti.fsuper/imagepicker",
-                                        (Math.round((Math.random() * 9 + 1) * 100000))
-                                                + ".jpg");
-                                if (!image_file.exists()) {
-                                    image_file.mkdirs();
+                                } else {
+
+                                    image_file = new File(
+                                            "/data/data/com.zzti.fsuper/imagepicker", (Math.round((Math.random() * 9 + 1) * 100000)) + ".jpg");
+                                    if (!image_file.exists()) {
+                                        image_file.mkdirs();
+                                    }
                                 }
+
                             }
 
                             FileOutputStream out = new FileOutputStream(image_file);
@@ -120,8 +124,11 @@ public class ImageUtils {
                             loadedImage.recycle();
                             loadedImage = null;
                             scanPhoto(context, image_file.getAbsolutePath());  //刷新到相册
+
                         } catch (Exception e) {
                             // TODO: handle exception
+
+                            Log.i("fyg","保存失败："+e.getMessage());
                         }
 
                     }

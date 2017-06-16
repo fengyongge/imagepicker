@@ -115,9 +115,9 @@ public class PreViewActivity extends AppCompatActivity {
                             }
 
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("pics",(ArrayList<PhotoModel>)tempList);
+                            bundle.putSerializable("photos",(ArrayList<PhotoModel>)tempList);
                             bundle.putInt("position", 0);
-                            bundle.putString("save","save");
+                            bundle.putBoolean("isSave",true);
                             CommonUtils.launchActivity(PreViewActivity.this, PhotoPreviewActivity.class, bundle);
                         }
                     });

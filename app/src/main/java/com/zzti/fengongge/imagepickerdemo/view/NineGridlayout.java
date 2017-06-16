@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.zzti.fengongge.imagepickerdemo.PreViewActivity;
 import com.zzti.fengongge.imagepickerdemo.utils.ScreenTools;
 import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,14 +64,12 @@ public class NineGridlayout extends ViewGroup {
         //根据子view数量确定高度
         LayoutParams params = getLayoutParams();
         params.height = singleHeight * rows + gap * (rows - 1);
-        
-        System.out.println("  params.height "+  params.height );
         setLayoutParams(params);
 
         for (int i = 0; i < childrenCount; i++) {
             childrenView = (CustomImageView) getChildAt(i);
             childrenView.setImageUrl(((PhotoModel) listData.get(i)).getOriginalPath());
-//            ImageLoader.getInstance().displayImage(((PicBean) listData.get(i)).getImg_thumb(), childrenView);
+
             int[] position = findPosition(i);
             int left = (singleWidth + gap) * position[1];
             int top = (singleHeight + gap) * position[0];
@@ -82,12 +82,13 @@ public class NineGridlayout extends ViewGroup {
 				
 				@Override
 				public void onClick(View arg0) {
-
+                    //展示多张图片
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("pics",(Serializable) listData);
+					bundle.putSerializable("photos",(Serializable) listData);
 					bundle.putInt("position", (Integer)arg0.getTag());
-					bundle.putString("save","save");
-					CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
+                    bundle.putBoolean("isSave",true);
+                    CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
+
 				}
 			});
             childrenView.setOnLongClickListener(new OnLongClickListener() {
@@ -100,29 +101,6 @@ public class NineGridlayout extends ViewGroup {
 			});
         }
 
-    }
-
-
-    private int[] findPosition(int childNum) {
-        int[] position = new int[2];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if ((i * columns + j) == childNum) {
-                    position[0] = i;//行
-                    position[1] = j;//列
-                    break;
-                }
-            }
-        }
-        return position;
-    }
-
-    public int getGap() {
-        return gap;
-    }
-
-    public void setGap(int gap) {
-        this.gap = gap;
     }
 
 
@@ -195,6 +173,29 @@ public class NineGridlayout extends ViewGroup {
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
         return iv;
+    }
+
+
+    private int[] findPosition(int childNum) {
+        int[] position = new int[2];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if ((i * columns + j) == childNum) {
+                    position[0] = i;//行
+                    position[1] = j;//列
+                    break;
+                }
+            }
+        }
+        return position;
+    }
+
+    public int getGap() {
+        return gap;
+    }
+
+    public void setGap(int gap) {
+        this.gap = gap;
     }
 
 

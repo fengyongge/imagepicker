@@ -15,9 +15,10 @@ import android.widget.TextView;
 
 import com.zzti.fengongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.AnimationUtil;
+import com.zzti.fengyongge.imagepicker.util.AnimationUtils;
 import com.zzti.fengyongge.imagepicker.view.PhotoPreview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,14 +26,16 @@ import java.util.List;
  * Created by fengyongge on 2016/5/24
  */
 public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPageChangeListener, OnClickListener {
+	protected List<PhotoModel> photos = new ArrayList<>();
+	protected int current;
+	private Boolean is_save;
 	private ViewPager mViewPager;
 	private RelativeLayout layoutTop;
 	private ImageButton btnBack;
 	private TextView tvPercent;
-	protected List<PhotoModel> photos;
-	protected int current;
-	private Boolean is_save;
 	protected boolean isUp;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,20 +107,17 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		updatePercent();
 	}
 
-	protected void updatePercent() {
-		tvPercent.setText((current + 1) + "/" + photos.size());
-	}
 
 	/** 图片点击事件回调 */
 	private OnClickListener photoItemClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			if (!isUp) {
-				new AnimationUtil(getApplicationContext(), R.anim.translate_up)
+				new AnimationUtils(getApplicationContext(), R.anim.translate_up)
 						.setInterpolator(new LinearInterpolator()).setFillAfter(true).startAnimation(layoutTop);
 				isUp = true;
 			} else {
-				new AnimationUtil(getApplicationContext(), R.anim.translate_down_current)
+				new AnimationUtils(getApplicationContext(), R.anim.translate_down_current)
 						.setInterpolator(new LinearInterpolator()).setFillAfter(true).startAnimation(layoutTop);
 				isUp = false;
 			}
@@ -125,12 +125,18 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 	};
 
 
-
 	/** 绑定数据，更新界面 */
 	protected void bindData(Boolean is_save) {
 		this.is_save = is_save;
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setCurrentItem(current);
+	}
+
+	/**
+	 * 展示当前张数
+	 */
+	protected void updatePercent() {
+		tvPercent.setText((current + 1) + "/" + photos.size());
 	}
 	
 }

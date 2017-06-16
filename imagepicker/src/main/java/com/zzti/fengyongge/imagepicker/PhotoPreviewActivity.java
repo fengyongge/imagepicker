@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements PhotoSelectorActivity.OnLocalReccentListener {
 	private PhotoSelectorDomain photoSelectorDomain;
+	private boolean isSave;//是否保存图片
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,11 +30,22 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 	protected void init(Bundle extras) {
 		if (extras == null)
 			return;
-		if (extras.containsKey("photos")) { // 预览图片
-			photos = (List<PhotoModel>) extras.getSerializable("photos");
-			current = extras.getInt("position", 0);
-			updatePercent();
-			bindData(false);
+
+		isSave = extras.getBoolean("isSave",false);
+
+		if (extras.containsKey("photos")) { // 预览图片，选择需要的图片
+
+			this.photos = (List<PhotoModel>) extras.getSerializable("photos");
+			this.current = extras.getInt("position", 0);
+
+			if(isSave){ // 是否保存（一般保存网络图片，本地图片只能查看）
+				bindData(true);
+				updatePercent();
+			}else{
+				bindData(false);
+			}
+
+
 		} else if (extras.containsKey("album")) { // 点击图片查看
 			String albumName = extras.getString("album"); // 相册
 			this.current = extras.getInt("position");
@@ -40,14 +54,6 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 			} else {
 				photoSelectorDomain.getAlbum(albumName, this);
 			}
-		}else if(extras.containsKey("save")){ // 是否保存（一般保存网络图片，本地图片只能查看）
-			List<PhotoModel> pics = (List<PhotoModel>) extras.getSerializable("pics");
-			int position = extras.getInt("position");
-			List<PhotoModel> photos = new ArrayList<PhotoModel>();
-			photos = pics;
-			this.photos = photos;
-			this.current = position;
-			bindData(true);
 		}
 	}
 

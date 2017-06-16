@@ -5,7 +5,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -13,38 +12,38 @@ import android.view.animation.TranslateAnimation;
 /**
  * Created by fengyongge on 2016/5/24
  */
-public class AnimationUtil implements AnimationListener {
+public class AnimationUtils implements AnimationListener {
 
 	private Animation animation;
 	private OnAnimationEndListener animationEndListener; // 动画完成监听器
 	private OnAnimationStartListener animationStartListener; // 动画开始监听器
 	private OnAnimationRepeatListener animationRepeatListener; // 动画重复时的监听器
 
-	public AnimationUtil(Context context, int resId) {
-		this.animation = AnimationUtils.loadAnimation(context, resId);
+	public AnimationUtils(Context context, int resId) {
+		this.animation = android.view.animation.AnimationUtils.loadAnimation(context, resId);
 		this.animation.setAnimationListener(this);
 	}
 
 	/** 自定义一个Translate类型的Animation */
-	public AnimationUtil(float fromXDelta, float toXDelta, float fromYDelta,
-			float toYDelta) {
+	public AnimationUtils(float fromXDelta, float toXDelta, float fromYDelta,
+                          float toYDelta) {
 		animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta,
 				toYDelta);
 	}
 
 	/** 两个动画之间的时间间隔 */
-	public AnimationUtil setStartOffSet(long startOffset) {
+	public AnimationUtils setStartOffSet(long startOffset) {
 		animation.setStartOffset(startOffset);
 		return this;
 	}
 
 	/** 设置一个动画的插入器 */
-	public AnimationUtil setInterpolator(Interpolator i) {
+	public AnimationUtils setInterpolator(Interpolator i) {
 		animation.setInterpolator(i);
 		return this;
 	}
 	
-	public AnimationUtil setLinearInterpolator() {
+	public AnimationUtils setLinearInterpolator() {
 		animation.setInterpolator(new LinearInterpolator());
 		return this;
 	}
@@ -60,12 +59,12 @@ public class AnimationUtil implements AnimationListener {
 		((AnimationDrawable) view.getBackground()).start();
 	}
 
-	public AnimationUtil setDuration(long durationMillis) {
+	public AnimationUtils setDuration(long durationMillis) {
 		animation.setDuration(durationMillis);
 		return this;
 	}
 
-	public AnimationUtil setFillAfter(boolean fillAfter) {
+	public AnimationUtils setFillAfter(boolean fillAfter) {
 		animation.setFillAfter(fillAfter);
 		return this;
 	}
@@ -82,19 +81,19 @@ public class AnimationUtil implements AnimationListener {
 		void onAnimationRepeat(Animation animation);
 	}
 
-	public AnimationUtil setOnAnimationEndLinstener(
+	public AnimationUtils setOnAnimationEndLinstener(
 			OnAnimationEndListener listener) {
 		this.animationEndListener = listener;
 		return this;
 	}
 
-	public AnimationUtil setOnAnimationStartLinstener(
+	public AnimationUtils setOnAnimationStartLinstener(
 			OnAnimationStartListener listener) {
 		this.animationStartListener = listener;
 		return this;
 	}
 
-	public AnimationUtil setOnAnimationRepeatLinstener(
+	public AnimationUtils setOnAnimationRepeatLinstener(
 			OnAnimationRepeatListener listener) {
 		this.animationRepeatListener = listener;
 		return this;

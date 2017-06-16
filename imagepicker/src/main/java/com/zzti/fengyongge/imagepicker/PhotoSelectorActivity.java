@@ -28,7 +28,7 @@ import com.zzti.fengyongge.imagepicker.adapter.PhotoSelectorAdapter;
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
 import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.AnimationUtil;
+import com.zzti.fengyongge.imagepicker.util.AnimationUtils;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
@@ -210,13 +210,13 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	/** 弹出相册列表 */
 	private void popAlbum() {
 		layoutAlbum.setVisibility(View.VISIBLE);
-		new AnimationUtil(getApplicationContext(), R.anim.translate_up_current).setLinearInterpolator().startAnimation(
+		new AnimationUtils(getApplicationContext(), R.anim.translate_up_current).setLinearInterpolator().startAnimation(
 				layoutAlbum);
 	}
 
 	/** 隐藏相册列表 */
 	private void hideAlbum() {
-		new AnimationUtil(getApplicationContext(), R.anim.translate_down).setLinearInterpolator().startAnimation(
+		new AnimationUtils(getApplicationContext(), R.anim.translate_down).setLinearInterpolator().startAnimation(
 				layoutAlbum);
 		layoutAlbum.setVisibility(View.GONE);
 	}
