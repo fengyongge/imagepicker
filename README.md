@@ -1,16 +1,34 @@
 # imagepicker(图片选择器)
 ## 图片选择器简介
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.1.0](https://github.com/fengyongge/imagepicker)。
+
 * 从相册里面选择图片或者拍照获取照片
-* 浏览所选图片
-* 保存所选图片
+* 浏览选择的本地或者网络图片
+* 保存图片
+
+## 更新说明
+v1.1.0(2017/6/15)
+-----------------
+1. 修复图库无图片崩溃
+2. 修复三星手机拍照崩溃
+3. 修复部分手机（以小米为主）选择图片后内存溢出
+
+v1.0(2016/8/4)
+-----------------
+1. 新增从相册里面选择图片或者拍照获取照片
+2. 新增浏览选择的本地或者网络图片
+3. 新增保存图片
+
 
 ## 如何引用
 * 配置gradle依赖
 ```java
-compile 'com.zzti.fengyongge:imagepicker:1.0'
+compile 'com.zzti.fengyongge:imagepicker:1.1.0'
 ```
 * 配置清单文件权限
 ```java
+ <!--在sdcard中创建/删搜索除文件的权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 <!-- 从sdcard中读取数据的权限 -->
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <!-- 往sdcard中写入数据的权限 -->
@@ -47,18 +65,21 @@ startActivityForResult(intent, 0);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 		}
-```		
+```
 * 浏览图片
 ```java
-private List<PhotoModel> single_photos = new ArrayList<PhotoModel>();//存放对象list
-int position;
-//预览
-Bundle bundle = new Bundle();
-bundle.putSerializable("pics",(Serializable)single_photos);
-bundle.putInt("position", position);//position预览图片地址
-bundle.putString("save","save");//save表示可以保存预览图片
-CommonUtils.launchActivity(MainActivity.this, PhotoPreviewActivity.class, bundle);
-```	
+ List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
+//PhotoModel 开发者将自己本地bean的list封装成PhotoModel的list，PhotoModel属性源码可查看
+ Bundle bundle = new Bundle();
+ bundle.putSerializable("photos",(Serializable)single_photos);
+ bundle.putInt("position", position);//position预览图片地址
+ bundle.putBoolean("isSave",true);//isSave表示是否可以保存预览图片，建议只有预览网络图片时设置true
+ CommonUtils.launchActivity(PreViewActivity.this, PhotoPreviewActivity.class, bundle);
+```
+* 保存图片
+
+ 网络图片点击保存时，默认保存到内存卡，imagepicker文件夹下
+
 ## 实际效果
 ![](https://raw.githubusercontent.com/917386389/imagepickerdemo/master/app/src/4.gif)
 
@@ -67,10 +88,11 @@ CommonUtils.launchActivity(MainActivity.this, PhotoPreviewActivity.class, bundle
 ## 关于作者
 ```java
 Log.i("name", "fsuper");
+Log.i("homepage", "http://fengyongge.github.io/");
 Log.i("email", "fengyongge98@gmail.com");
 Log.i("motto1", "可以让步，却不可以退缩，可以羞涩，却不可以软弱");
 Log.i("motto2", "纸上得来终觉浅 绝知此事要躬行");
-```	
+```
 
 ## License
 ```
@@ -88,6 +110,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
-
-
