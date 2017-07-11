@@ -1,12 +1,17 @@
 # imagepicker(图片选择器)
 ## 图片选择器简介
-imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.1.0](https://github.com/fengyongge/imagepicker)。
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.2.0](https://github.com/fengyongge/imagepicker)。
 
 * 从相册里面选择图片或者拍照获取照片
 * 浏览选择的本地或者网络图片
 * 保存图片
 
 ## 更新说明
+v1.2.0(2017/7/11)
+-----------------
+1. 权限适配6.0，添加动态权限申请
+2. 优化项目
+
 v1.1.0(2017/6/15)
 -----------------
 1. 修复图库无图片崩溃
@@ -23,17 +28,9 @@ v1.0(2016/8/4)
 ## 如何引用
 * 配置gradle依赖
 ```java
-compile 'com.zzti.fengyongge:imagepicker:1.1.0'
+compile 'com.zzti.fengyongge:imagepicker:1.2.0'
 ```
-* 配置清单文件权限
-```java
- <!--在sdcard中创建/删搜索除文件的权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-<!-- 从sdcard中读取数据的权限 -->
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<!-- 往sdcard中写入数据的权限 -->
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-```
+
 * 配置清单文件所需activity
 ```java
 <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>//选择图片
