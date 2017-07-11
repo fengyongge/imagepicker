@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">imagepickerdemo</string>
+
+
+        <string name="rationale_camera">我们需要访问您的相机才可以采集照片。</string>
+        <string name="rationale_location_contacts">我们需要访问您的位置和通讯录信息</string>
+        <string name="rationale_sms">这个程序需要访问你的短信读你所有的大消息。</string>
+        <string name="rationale_ask_again">如果没有请求的权限，这个应用程序可能无法正常工作。打开应用程序设置界面修改应用程序权限。</string>
+        <string name="title_settings_dialog">权限要求</string>
+        <string name="setting">设置</string>
+        <string name="cancel">取消</string>
+        <string name="settings_dialog_canceled">设置对话框取消</string>
+        <string name="returned_from_app_settings_to_activity">Returned from app settings to MainActivity</string>
+        <string name="has_read_sms_permission">已读短信权限: %b</string>
+
+
+    <string name="pic_camera">我们需要访问您的相册</string>
+
+
 </resources>

@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 
 public class PhotoPreview extends LinearLayout implements OnClickListener {
-	boolean	is_chat=false;
 	private ProgressBar pbLoading;
 	private ImageView ivContent;
 	private OnClickListener l;

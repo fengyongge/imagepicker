@@ -1,5 +1,6 @@
 package com.zzti.fengyongge.imagepicker;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -34,10 +36,13 @@ import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
 import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 /**
@@ -45,16 +50,23 @@ import java.util.List;
  * 图片选择
  */
 public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.onItemClickListener, SelectPhotoItem.onPhotoItemCheckedListener,
-		OnItemClickListener, OnClickListener {
+		OnItemClickListener, OnClickListener
+		, EasyPermissions.PermissionCallbacks {
+
+	private static final int WRITE_EXTERNAL_STORAGE = 123;
+	private static final int RC_CAMERA_PERM = 124;
+	private static final int RC_SETTINGS_SCREEN = 125;
+
+
 	public static final String RECCENT_PHOTO = "最近照片";
 	private List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
 	private GridView gvPhotos;
+	private PhotoSelectorAdapter photoAdapter;
 	private ListView lvAblum;
+	private AlbumAdapter albumAdapter;
 	private TextView btnOk;
 	private TextView tvAlbum, tvPreview, tvTitle;
 	private PhotoSelectorDomain photoSelectorDomain;
-	private PhotoSelectorAdapter photoAdapter;
-	private AlbumAdapter albumAdapter;
 	private RelativeLayout layoutAlbum;
 	public static ArrayList<PhotoModel> selected = new ArrayList<PhotoModel>();;
 	private ArrayList<String> img_path = new ArrayList<String>();
@@ -77,18 +89,8 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
 		setContentView(R.layout.activity_photoselector);
+		initImageLoader();
 		limit = getIntent().getIntExtra("limit", 0);
-		DisplayImageOptions defaultDisplayImageOptions = new DisplayImageOptions.Builder() //
-				.considerExifParams(true) // 调整图片方向
-				.resetViewBeforeLoading(true) // 载入之前重置ImageView
-				.showImageOnLoading(R.drawable.ic_picture_loading) // 载入时图片设置为黑色
-				.showImageOnFail(R.drawable.ic_picture_loadfailed) // 加载失败时显示的图片
-				.delayBeforeLoading(0) // 载入之前的延迟时间
-				.build(); //
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-				.defaultDisplayImageOptions(defaultDisplayImageOptions).memoryCacheExtraOptions(480, 800)
-				.threadPoolSize(5).build();
-		ImageLoader.getInstance().init(config);
 		photoSelectorDomain = new PhotoSelectorDomain(getApplicationContext());
 		tvTitle = (TextView) findViewById(R.id.tv_title_lh);
 		gvPhotos = (GridView) findViewById(R.id.gv_photos_ar);
@@ -100,27 +102,50 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		btnOk.setOnClickListener(this);
 		tvAlbum.setOnClickListener(this);
 		tvPreview.setOnClickListener(this);
+		findViewById(R.id.bv_back_lh).setOnClickListener(this);
+		writeTask();
+	}
+
+
+	public void initImageLoader(){
+		DisplayImageOptions defaultDisplayImageOptions = new DisplayImageOptions.Builder() //
+				.considerExifParams(true) // 调整图片方向
+				.resetViewBeforeLoading(true) // 载入之前重置ImageView
+				.showImageOnLoading(R.drawable.ic_picture_loading) // 载入时图片设置为黑色
+				.showImageOnFail(R.drawable.ic_picture_loadfailed) // 加载失败时显示的图片
+				.delayBeforeLoading(0) // 载入之前的延迟时间
+				.build();
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+				.defaultDisplayImageOptions(defaultDisplayImageOptions).memoryCacheExtraOptions(480, 800)
+				.threadPoolSize(5).build();
+		ImageLoader.getInstance().init(config);
+	}
+
+
+	public void showPic(){
 		photoAdapter = new PhotoSelectorAdapter(getApplicationContext(), new ArrayList<PhotoModel>(),
 				CommonUtils.getWidthPixels(this), this, this, this,limit);
 		gvPhotos.setAdapter(photoAdapter);
 		albumAdapter = new AlbumAdapter(getApplicationContext(), new ArrayList<AlbumModel>());
 		lvAblum.setAdapter(albumAdapter);
 		lvAblum.setOnItemClickListener(this);
-		findViewById(R.id.bv_back_lh).setOnClickListener(this); // 返回
+
 		photoSelectorDomain.getReccent(reccentListener); // 更新最近照片
-		photoSelectorDomain.updateAlbum(albumListener); // 跟新相册信息
+		photoSelectorDomain.updateAlbum(albumListener); // 更新相册信息
 	}
+
+
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btn_right_lh)
-			ok(); // 选完照片
+			ok();
 		else if (v.getId() == R.id.tv_album_ar)
 			album();
 		else if (v.getId() == R.id.tv_preview_ar)
 			priview();
 		else if (v.getId() == R.id.tv_camera_vc)
-			catchPicture();
+			cameraTask();
 		else if (v.getId() == R.id.bv_back_lh)
 			finish();
 	}
@@ -141,6 +166,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 			return null;
 		}else {
 			String path_name = FileUtils.LOCAL_PATH+"/"+System.currentTimeMillis()+".jpg";
+
 			FileUtils.writeImage(cropImage, path_name, 100);
 			return path_name;
 		}
@@ -293,6 +319,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 			photoSelectorDomain.getAlbum(current.getName(), reccentListener); // 获取选中相册的照片
 	}
 
+
 	/** 获取本地图库照片回调 */
 	public interface OnLocalReccentListener {
 		public void onPhotoLoaded(List<PhotoModel> photos);
@@ -312,16 +339,83 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	private OnLocalReccentListener reccentListener = new OnLocalReccentListener() {
 		@Override
 		public void onPhotoLoaded(List<PhotoModel> photos) {
-			if (tvAlbum.getText().equals(RECCENT_PHOTO))
-			photos.add(0, new PhotoModel());
-			single_photos.clear();
-			single_photos.addAll(photos);
-			photoAdapter.update(photos);
-			gvPhotos.smoothScrollToPosition(0); // 滚动到顶端
-			reset();
+
+			if (tvAlbum.getText().equals(RECCENT_PHOTO)){
+				photos.add(0, new PhotoModel());
+				single_photos.clear();
+				single_photos.addAll(photos);
+				photoAdapter.update(photos);
+				gvPhotos.smoothScrollToPosition(0); // 滚动到顶端
+				reset();
+			}
 		}
 	};
 
 
+
+	/**
+	 * 6.0动态申请获取相册权限
+	 */
+	@AfterPermissionGranted(WRITE_EXTERNAL_STORAGE)
+	public void writeTask() {
+		if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+			// Have permission, do the thing!
+			showPic();
+		} else {
+			// Ask for one permission
+			EasyPermissions.requestPermissions(this, getString(R.string.write),
+					WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		}
+	}
+
+
+	/**
+	 * 6.0动态申请拍照权限
+	 */
+	@AfterPermissionGranted(RC_CAMERA_PERM)
+	public void cameraTask() {
+		if (EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA)) {
+			// Have permission, do the thing!
+			catchPicture();
+		} else {
+			// Ask for one permission
+			EasyPermissions.requestPermissions(this, getString(R.string.rationale_camera),
+					RC_CAMERA_PERM, Manifest.permission.CAMERA);
+		}
+	}
+
+	@Override
+	public void onPermissionsGranted(int requestCode, List<String> perms) {
+		switch (requestCode){
+			case WRITE_EXTERNAL_STORAGE:
+				showPic();
+				break;
+			case RC_CAMERA_PERM:
+				catchPicture();
+				break;
+		}
+	}
+
+	@Override
+	public void onPermissionsDenied(int requestCode, List<String> perms) {
+		// (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
+		// This will display a dialog directing them to enable the permission in app settings.
+		new AppSettingsDialog.Builder(this, getString(R.string.rationale_ask_again))
+				.setTitle(getString(R.string.title_settings_dialog))
+				.setPositiveButton(getString(R.string.setting))
+				.setNegativeButton(getString(R.string.cancel), null /* click listener */)
+				.setRequestCode(RC_SETTINGS_SCREEN)
+				.build()
+				.show();
+	}
+
+
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		// 调用EasyPermissions的onRequestPermissionsResult方法，参数和系统方法保持一致，然后就不要关心具体的权限申请代码了
+		EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+	}
 
 }

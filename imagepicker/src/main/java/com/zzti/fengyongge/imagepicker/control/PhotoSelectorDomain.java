@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 import com.zzti.fengyongge.imagepicker.model.AlbumModel;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @SuppressLint("HandlerLeak")
 public class PhotoSelectorDomain {
+
 	private AlbumController albumController;
 	public PhotoSelectorDomain(Context context) {
 		albumController = new AlbumController(context);
@@ -28,13 +30,8 @@ public class PhotoSelectorDomain {
 			@Override
 			public void handleMessage(Message msg) {
 				List<PhotoModel> temp_photos = (List<PhotoModel>) msg.obj;
-				List<PhotoModel> photos = new ArrayList<PhotoModel>();
-				for (int i = 0; i < temp_photos.size(); i++) {
-					if (!temp_photos.get(i).getOriginalPath().contains("ShareSDK")) {
-						photos.add(temp_photos.get(i));
-					}
-				}
-				listener.onPhotoLoaded(photos);
+
+				listener.onPhotoLoaded(temp_photos);
 			}
 		};
 		new Thread(new Runnable() {

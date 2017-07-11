@@ -34,7 +34,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:numColumns="4" />
+            android:numColumns="3" />
     </LinearLayout>
 
 </LinearLayout>

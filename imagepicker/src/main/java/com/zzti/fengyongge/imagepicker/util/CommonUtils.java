@@ -70,16 +70,6 @@ public class CommonUtils {
 		context.stopService(intent);
 	}
 
-	/**
-	 * 判断字符串是否为空
-	 * @param text
-	 * @return true null false !null
-	 */
-	public static boolean isNull(CharSequence text) {
-		if (text == null || "".equals(text.toString().trim()) || "null".equals(text))
-			return true;
-		return false;
-	}
 
 	/** 获取屏幕宽度 */
 	public static int getWidthPixels(Activity activity) {

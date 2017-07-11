@@ -31,7 +31,8 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	}
 
 	public PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models, int screenWidth,
-								SelectPhotoItem.onPhotoItemCheckedListener listener, SelectPhotoItem.onItemClickListener mCallback, OnClickListener cameraListener, int limit) {
+								SelectPhotoItem.onPhotoItemCheckedListener listener,
+								SelectPhotoItem.onItemClickListener mCallback, OnClickListener cameraListener, int limit) {
 		this(context, models);
 		setItemWidth(screenWidth);
 		this.listener = listener;

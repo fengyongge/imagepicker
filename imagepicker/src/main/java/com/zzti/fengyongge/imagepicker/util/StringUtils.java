@@ -16,7 +16,6 @@ public class StringUtils {
 	}
 
 
-
 	/**
 	 * 判断字符串是否为空
 	 * @param text

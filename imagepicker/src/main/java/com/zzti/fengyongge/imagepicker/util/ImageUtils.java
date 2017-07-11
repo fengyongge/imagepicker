@@ -34,14 +34,10 @@ import java.util.logging.Logger;
 
 public class ImageUtils {
 
-    public static final int GET_IMAGE_BY_CAMERA = 5001;
-    public static final int GET_IMAGE_FROM_PHONE = 5002;
-    public static Uri imageUriFromCamera;
     private static File image_file;
 
     /**
      * 创建一条图片地址uri,用于保存拍照后的照片
-     *
      * @param context
      * @return 图片的uri
      */
@@ -68,6 +64,12 @@ public class ImageUtils {
         return imageFilePath;
     }
 
+
+    /**
+     * imageloder下载图片
+     * @param context
+     * @param mImageUrl
+     */
     public static void loadImage(final Context context, String mImageUrl) {
 
         ImageLoader.getInstance().loadImage(mImageUrl,
@@ -127,7 +129,6 @@ public class ImageUtils {
 
                         } catch (Exception e) {
                             // TODO: handle exception
-
                             Log.i("fyg","保存失败："+e.getMessage());
                         }
 
@@ -142,7 +143,11 @@ public class ImageUtils {
             }
 
 
-    //压缩图片
+    /**
+     * 根据路径，生成bitmip
+     * @param srcPath
+     * @return
+     */
     public static Bitmap getimage(String srcPath) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
@@ -174,7 +179,11 @@ public class ImageUtils {
     }
 
 
-
+    /**
+     * 压缩方法
+     * @param image
+     * @return
+     */
     public static Bitmap compressImage(Bitmap image) {
         Bitmap c_bitmap = null ;
         try {
@@ -261,7 +270,13 @@ public class ImageUtils {
 
 
 
-    // URI转绝对路径
+
+    /**
+     *  URI转绝对路径
+     * @param activity
+     * @param uri
+     * @return
+     */
     public static String getAbsoluteImagePath(Activity activity,Uri uri) {
         // can post image
         String[] proj = { MediaColumns.DATA };

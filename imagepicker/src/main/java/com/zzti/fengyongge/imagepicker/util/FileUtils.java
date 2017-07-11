@@ -2,6 +2,7 @@ package com.zzti.fengyongge.imagepicker.util;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -18,7 +19,7 @@ import java.io.RandomAccessFile;
 public final class FileUtils
 {
     public static String SDCARD_PAHT ;// SD卡路径
-    public static String LOCAL_PATH ;// 本地路径,即/data/data/目录下的程序私有目录
+    public static String LOCAL_PATH ;// 本地路径,即/data/data/目录下的程序私有目录,emulate/0
     public static String CURRENT_PATH = "";// 当前的路径,如果有SD卡的时候当前路径为SD卡，如果没有的话则为程序的私有目录
 
     static
@@ -59,7 +60,8 @@ public final class FileUtils
         return pathIn.replace(CURRENT_PATH, getDiffPath());
     }
 
-    // ------------------------------------文件的相关方法--------------------------------------------
+
+
     /**
      * 将数据写入一个文件
      *
@@ -390,48 +392,14 @@ public final class FileUtils
         return buffer.toString();
     }
 
-    //批量更改文件后缀
-    public static void reNameSuffix(File dir,String oldSuffix,String newSuffix)
-    {
-        if (dir.isDirectory())
-        {
-            File[] listFiles = dir.listFiles();
-            for (int i = 0; i < listFiles.length ; i++)
-            {
-                reNameSuffix(listFiles[i],oldSuffix,newSuffix);
-            }
-        }
-        else
-        {
-            dir.renameTo(new File(dir.getPath().replace(oldSuffix, newSuffix)));
-        }
-    }
 
 
+    //-------------------------------------------------------------------------------------------------
 
-    public static void writeImage(Bitmap bitmap,String destPath,int quality)
-    {
-        try {
-            FileUtils.deleteFile(destPath);
-            if (FileUtils.createFile(destPath))
-            {
-                FileOutputStream out = new FileOutputStream(destPath);
-                if (bitmap.compress(Bitmap.CompressFormat.JPEG,quality, out))
-                {
-                    out.flush();
-                    out.close();
-                    out = null;
-                }
-
-                bitmap.recycle();
-                bitmap=null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
+    /**
+     * 删除文件路径
+     * @param sPath
+     */
     public static void DeleteFolder(String sPath) {
         File file = new File(sPath);
         // 判断目录或文件是否存在
@@ -453,12 +421,16 @@ public final class FileUtils
      */
     public static boolean deleteFile(String sPath) {
         File file = new File(sPath);
+        Log.i("fyg","sPath:"+sPath);
+
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists()) {
             file.delete();
         }
         return false;
     }
+
+
     /**
      * 删除目录（文件夹）以及目录下的文件
      *
@@ -485,6 +457,36 @@ public final class FileUtils
         }
     }
 
+
+
+
+    /**
+     * 给文件路径写入图片
+     * @param bitmap
+     * @param destPath
+     * @param quality
+     */
+    public static void writeImage(Bitmap bitmap,String destPath,int quality)
+    {
+        try {
+            FileUtils.deleteFile(destPath);
+            if (FileUtils.createFile(destPath))
+            {
+                FileOutputStream out = new FileOutputStream(destPath);
+                if (bitmap.compress(Bitmap.CompressFormat.JPEG,quality, out))
+                {
+                    out.flush();
+                    out.close();
+                    out = null;
+                }
+
+                bitmap.recycle();
+                bitmap=null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

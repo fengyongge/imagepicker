@@ -1,5 +1,6 @@
 package com.zzti.fengongge.imagepickerdemo;
 
+import android.Manifest;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +13,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.zzti.fengongge.imagepickerdemo.model.UploadGoodsBean;
 import com.zzti.fengongge.imagepickerdemo.utils.Config;
 import com.zzti.fengongge.imagepickerdemo.utils.DbTOPxUtils;
@@ -23,49 +22,43 @@ import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.util.FileUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * @author fengyongge
  * @Description
  */
-public class AddPicActivity extends AppCompatActivity {
+public class AddPicActivity extends AppCompatActivity  {
 
     private List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
     private ArrayList<UploadGoodsBean> img_uri = new ArrayList<UploadGoodsBean>();
-    GridImgAdapter gridImgsAdapter;
-    private MyGridView my_imgs_GV;
     private int screen_widthOffset;
+    private MyGridView my_imgs_GV;
+    GridImgAdapter gridImgsAdapter;
 
-        @Override
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_add_pic);
-            
-            DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                    .cacheInMemory(true).cacheOnDisc(true).build();
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                    getApplicationContext()).defaultDisplayImageOptions(
-                    defaultOptions).build();
-            ImageLoader.getInstance().init(config);
+
             Config.ScreenMap = Config.getScreenSize(this, this);
             WindowManager windowManager = getWindowManager();
             Display display = windowManager.getDefaultDisplay();
-            screen_widthOffset = (display.getWidth() - (3* DbTOPxUtils.dip2px(this, 2)))/4;
+            screen_widthOffset = (display.getWidth() - (3* DbTOPxUtils.dip2px(this, 2)))/3;
 
             my_imgs_GV = (MyGridView) findViewById(R.id.my_goods_GV);
             gridImgsAdapter = new GridImgAdapter();
             my_imgs_GV.setAdapter(gridImgsAdapter);
             img_uri.add(null);
             gridImgsAdapter.notifyDataSetChanged();
-
         }
 
 
-        class GridImgAdapter extends BaseAdapter implements ListAdapter {
+    class GridImgAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public int getCount() {
                 return img_uri.size();
@@ -104,6 +97,7 @@ public class AddPicActivity extends AppCompatActivity {
                     holder.delete_IV.setVisibility(View.GONE);
                     
                     ImageLoader.getInstance().displayImage("drawable://" + R.drawable.iv_add_the_pic, holder.add_IB);
+
                     holder.add_IB.setOnClickListener(new View.OnClickListener() {
 
                         @Override
@@ -117,6 +111,7 @@ public class AddPicActivity extends AppCompatActivity {
 
                 } else {
                     ImageLoader.getInstance().displayImage("file://" + img_uri.get(position).getUrl(), holder.add_IB);
+
                     holder.delete_IV.setOnClickListener(new View.OnClickListener() {
                         private boolean is_addNull;
                         @Override
@@ -132,7 +127,9 @@ public class AddPicActivity extends AppCompatActivity {
                             if (is_addNull) {
                                 img_uri.add(null);
                             }
-//						FileUtils.DeleteFolder(img_url);
+
+						    FileUtils.DeleteFolder(img_url);//删除在emulate/0文件夹生成的图片
+
                             gridImgsAdapter.notifyDataSetChanged();
                         }
                     });
@@ -190,4 +187,4 @@ public class AddPicActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-    }
+ }

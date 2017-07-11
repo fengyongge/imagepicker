@@ -23,7 +23,6 @@ public class PreViewActivity extends AppCompatActivity {
 
     ListView lv;
     Adapter adapter;
-
     List<TestBean> list = new ArrayList<>();
 
     @Override
@@ -35,7 +34,6 @@ public class PreViewActivity extends AppCompatActivity {
         lv.setAdapter(adapter);
         loadMore();
     }
-
 
     public void loadMore(){
         TestBean testBean = new TestBean();
@@ -53,8 +51,6 @@ public class PreViewActivity extends AppCompatActivity {
         list.add(testBean1);
 
         adapter.notifyDataSetChanged();
-
-
     }
 
 
@@ -144,7 +140,6 @@ public class PreViewActivity extends AppCompatActivity {
         class ViewHolder{
             CustomImageView iv_oneimage;
             NineGridlayout iv_ngrid_layout;
-
         }
     }
 

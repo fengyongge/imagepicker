@@ -18,7 +18,6 @@ public class MyApp extends Application {
 //				.showImageOnFail(R.drawable.test)
 //				.showImageOnFail(R.drawable.test)
                 .cacheInMemory(true).cacheOnDisc(true).build();
-
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions).build();
 
