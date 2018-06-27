@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -36,6 +35,7 @@ import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
 import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,8 +165,12 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		if (cropImage == null) {
 			return null;
 		}else {
-			String path_name = FileUtils.LOCAL_PATH+"/"+System.currentTimeMillis()+".jpg";
 
+			File appDir = new File(Environment.getExternalStorageDirectory(), "ImagePicker");
+			if (!appDir.exists()) {
+				appDir.mkdir();
+			}
+			String path_name = appDir.getAbsolutePath()+File.separator+System.currentTimeMillis()+".jpg";
 			FileUtils.writeImage(cropImage, path_name, 100);
 			return path_name;
 		}
@@ -258,11 +262,11 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	/** 点击查看照片 */
 	public void onItemClick(int position) {
 		Bundle bundle = new Bundle();
-		if (tvAlbum.getText().toString().equals(RECCENT_PHOTO)){
+//		if (tvAlbum.getText().toString().equals(RECCENT_PHOTO)){
 			bundle.putInt("position", position - 1);
-		}else{
-			bundle.putInt("position", position);
-		}
+//		}else{
+//			bundle.putInt("position", position);
+//		}
 		bundle.putString("album", tvAlbum.getText().toString());
 		CommonUtils.launchActivity(this, PhotoPreviewActivity.class, bundle);
 	}
@@ -340,14 +344,14 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		@Override
 		public void onPhotoLoaded(List<PhotoModel> photos) {
 
-			if (tvAlbum.getText().equals(RECCENT_PHOTO)){
+//			if (tvAlbum.getText().equals(RECCENT_PHOTO)){
 				photos.add(0, new PhotoModel());
 				single_photos.clear();
 				single_photos.addAll(photos);
 				photoAdapter.update(photos);
 				gvPhotos.smoothScrollToPosition(0); // 滚动到顶端
 				reset();
-			}
+//			}
 		}
 	};
 
