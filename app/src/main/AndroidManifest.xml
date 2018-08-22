@@ -5,6 +5,18 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+
+    <!--在sdcard中创建/删搜索除文件的权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
+    <!-- 从sdcard中读取数据的权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 往sdcard中写入数据的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 拍照的权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -23,6 +35,21 @@
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity" />
         <activity android:name=".AddPicActivity" />
         <activity android:name=".PreViewActivity"></activity>
+
+
+        <!-- targetSDKVersion >= 24时才需要添加这个provider。
+        provider的authorities属性的值为${applicationId}.fileprovider，
+        请开发者根据自己的${applicationId}来设置这个值 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zzti.fengongge.imagepickerdemo.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>

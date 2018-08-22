@@ -142,6 +142,7 @@ public class AddPicActivity extends AppCompatActivity  {
                             bundle.putInt("position", position);
                             bundle.putBoolean("isSave",false);
                             CommonUtils.launchActivity(AddPicActivity.this, PhotoPreviewActivity.class, bundle);
+                            single_photos.clear();
                         }
                     });
 

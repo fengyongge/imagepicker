@@ -31,6 +31,7 @@ import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.AnimationUtils;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.util.FileProviderUtil;
 import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
 import com.zzti.fengyongge.imagepicker.util.StringUtils;
@@ -155,8 +156,11 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		path_name = "image"+(Math.round((Math.random()*9+1)*100000))+".jpg";
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// 下面这句指定调用相机拍照后的照片存储的路径
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(
-				Environment.getExternalStorageDirectory(),path_name)));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT,
+				FileProviderUtil.getFileUri(PhotoSelectorActivity.this,
+						new File(Environment.getExternalStorageDirectory(),
+								path_name),
+						this.getPackageName()+".fileprovider"));
 		startActivityForResult(intent, 2);
 	}
 
@@ -166,7 +170,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 			return null;
 		}else {
 
-			File appDir = new File(Environment.getExternalStorageDirectory(), "ImagePicker");
+			File appDir = new File(Environment.getExternalStorageDirectory(), "imagePicker");
 			if (!appDir.exists()) {
 				appDir.mkdir();
 			}
@@ -262,11 +266,11 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	/** 点击查看照片 */
 	public void onItemClick(int position) {
 		Bundle bundle = new Bundle();
-//		if (tvAlbum.getText().toString().equals(RECCENT_PHOTO)){
+		if (tvAlbum.getText().toString().equals(RECCENT_PHOTO)){
 			bundle.putInt("position", position - 1);
-//		}else{
-//			bundle.putInt("position", position);
-//		}
+		}else{
+			bundle.putInt("position", position);
+		}
 		bundle.putString("album", tvAlbum.getText().toString());
 		CommonUtils.launchActivity(this, PhotoPreviewActivity.class, bundle);
 	}
