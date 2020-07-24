@@ -1,13 +1,10 @@
-package com.zzti.fengongge.imagepickerdemo.model;
+package com.zzti.fengyongge.imagepickersample.model;
 
 
 
 import java.io.Serializable;
 
-/**
- * @author fengyongge
- * @Description
- */
+
 public class UploadGoodsBean implements Serializable {
     private String url;
     private Boolean isNet;

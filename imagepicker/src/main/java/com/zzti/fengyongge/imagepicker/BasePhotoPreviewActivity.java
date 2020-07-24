@@ -1,9 +1,6 @@
 package com.zzti.fengyongge.imagepicker;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -13,9 +10,13 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import com.zzti.fengongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.AnimationUtils;
+import com.zzti.fengyongge.imagepicker.util.LogUtils;
 import com.zzti.fengyongge.imagepicker.view.PhotoPreview;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by fengyongge on 2016/5/24
  */
-public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPageChangeListener, OnClickListener {
+public class BasePhotoPreviewActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, OnClickListener {
 	protected List<PhotoModel> photos = new ArrayList<>();
 	protected int current;
 	private Boolean is_save;
@@ -41,17 +42,30 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photopreview);
+		initView();
+		initOnclick();
+	}
+
+	void initView(){
 		layoutTop = (RelativeLayout) findViewById(R.id.layout_top_app);
 		btnBack = (ImageButton) findViewById(R.id.btn_back_app);
 		tvPercent = (TextView) findViewById(R.id.tv_percent_app);
 		mViewPager = (ViewPager) findViewById(R.id.vp_base_app);
-		btnBack.setOnClickListener(this);
-		mViewPager.setOnPageChangeListener(this);
-		overridePendingTransition(R.anim.activity_alpha_action_in, 0); // 渐入效果
-
+		overridePendingTransition(R.anim.activity_alpha_action_in, 0);
 		layoutTop.setVisibility(View.GONE);
 	}
 
+	void initOnclick(){
+		btnBack.setOnClickListener(this);
+		mViewPager.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.btn_back_app){
+			finish();
+		}
+	}
 
 	private PagerAdapter mPagerAdapter = new PagerAdapter() {
 		@Override
@@ -83,13 +97,6 @@ public class BasePhotoPreviewActivity extends Activity implements ViewPager.OnPa
 		}
 
 	};
-
-
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.btn_back_app)
-			finish();
-	}
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {

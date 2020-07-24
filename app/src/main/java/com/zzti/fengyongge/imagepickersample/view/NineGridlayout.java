@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepickerdemo.view;
+package com.zzti.fengyongge.imagepickersample.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,21 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.zzti.fengongge.imagepickerdemo.PreViewActivity;
-import com.zzti.fengongge.imagepickerdemo.utils.ScreenTools;
 import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepickersample.PreViewActivity;
+import com.zzti.fengyongge.imagepickersample.utils.ScreenTools;
+import com.zzti.fengyongge.imagepickersample.utils.SizeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * @author fengyongge
- * @Description
- */
+
 public class NineGridlayout extends ViewGroup {
 
     /**
@@ -43,7 +41,7 @@ public class NineGridlayout extends ViewGroup {
     public NineGridlayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         ScreenTools screenTools= ScreenTools.instance(getContext());
-        totalWidth=screenTools.getScreenWidth()-screenTools.dip2px(80);
+        totalWidth=screenTools.getScreenWidth()- SizeUtils.dp2px(80);
     }
 
     @Override
@@ -83,11 +81,7 @@ public class NineGridlayout extends ViewGroup {
 				@Override
 				public void onClick(View arg0) {
                     //展示多张图片
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("photos",(Serializable) listData);
-					bundle.putInt("position", (Integer)arg0.getTag());
-                    bundle.putBoolean("isSave",true);
-                    CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
+                    photoPreview(context,listData,(Integer)arg0.getTag(),true);
 
 				}
 			});
@@ -196,6 +190,16 @@ public class NineGridlayout extends ViewGroup {
 
     public void setGap(int gap) {
         this.gap = gap;
+    }
+
+
+
+    void photoPreview(Context context,List<PhotoModel> tempList,int positon,boolean isSave){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("photos", (ArrayList<PhotoModel>) tempList);
+        bundle.putInt("position", positon);
+        bundle.putBoolean("isSave", isSave);
+        CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
     }
 
 

@@ -7,11 +7,8 @@ import android.database.Cursor;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
-
 import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +29,9 @@ public class AlbumController {
 	public List<PhotoModel> getCurrent() {
 		Cursor cursor = resolver.query(Media.EXTERNAL_CONTENT_URI, new String[] { MediaColumns.DATA,
 				MediaColumns.DATE_ADDED, MediaColumns.SIZE }, null, null, MediaColumns.DATE_ADDED);
-		if (cursor == null || !cursor.moveToNext())
+		if (cursor == null || !cursor.moveToNext()){
 			return new ArrayList<PhotoModel>();
+		}
 		List<PhotoModel> photos = new ArrayList<PhotoModel>();
 		cursor.moveToLast();
 		do {
@@ -52,18 +50,22 @@ public class AlbumController {
 		Map<String, AlbumModel> map = new HashMap<String, AlbumModel>();
 		Cursor cursor = resolver.query(Media.EXTERNAL_CONTENT_URI, new String[] { MediaColumns.DATA,
 				ImageColumns.BUCKET_DISPLAY_NAME, MediaColumns.SIZE }, null, null, null);
-		if (cursor == null || !cursor.moveToNext())
+		if (cursor == null || !cursor.moveToNext()){
 			return new ArrayList<AlbumModel>();
+		}
 		cursor.moveToLast();
-		AlbumModel current = new AlbumModel("最近照片", 0, cursor.getString(cursor.getColumnIndex(MediaColumns.DATA)), true); // "最近照片"相册
+		// "最近照片"相册
+		AlbumModel current = new AlbumModel("最近照片", 0, cursor.getString(cursor.getColumnIndex(MediaColumns.DATA)), true);
 		albums.add(current);
 		do {
-			if (cursor.getInt(cursor.getColumnIndex(MediaColumns.SIZE)) < 1024)
+			if (cursor.getInt(cursor.getColumnIndex(MediaColumns.SIZE)) < 1024){
 				continue;
+			}
 			current.increaseCount();
 			String name = cursor.getString(cursor.getColumnIndex(ImageColumns.BUCKET_DISPLAY_NAME));
-			if (map.keySet().contains(name))
+			if (map.keySet().contains(name)){
 				map.get(name).increaseCount();
+			}
 			else {
 				AlbumModel album = new AlbumModel(name, 1, cursor.getString(cursor.getColumnIndex(MediaColumns.DATA)));
 				map.put(name, album);
@@ -78,8 +80,9 @@ public class AlbumController {
 		Cursor cursor = resolver.query(Media.EXTERNAL_CONTENT_URI, new String[] { ImageColumns.BUCKET_DISPLAY_NAME,
 				MediaColumns.DATA, MediaColumns.DATE_ADDED, MediaColumns.SIZE }, "bucket_display_name = ?",
 				new String[] { name }, MediaColumns.DATE_ADDED);
-		if (cursor == null || !cursor.moveToNext())
+		if (cursor == null || !cursor.moveToNext()){
 			return new ArrayList<PhotoModel>();
+		}
 		List<PhotoModel> photos = new ArrayList<PhotoModel>();
 		cursor.moveToLast();
 		do {

@@ -1,14 +1,11 @@
-package com.zzti.fengongge.imagepickerdemo.view;
+package com.zzti.fengyongge.imagepickersample.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-/**
- * @author fengyongge
- * @Description
- */
+
 public class MyGridView extends GridView {
 
 	public MyGridView(Context context) {
@@ -35,13 +32,7 @@ public class MyGridView extends GridView {
 			ViewGroup.LayoutParams params = getLayoutParams();
 			params.height = getMeasuredHeight();
 
-		 
-		 
-		 
 	     }
-	 
-	 
 
-	 
 
 }

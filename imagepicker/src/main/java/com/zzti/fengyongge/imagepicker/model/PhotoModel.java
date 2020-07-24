@@ -1,7 +1,4 @@
-/*
- * Copyright (c) 2016, ZCJ All Rights Reserved.
- * Project Name: zcj_android-V0.21
- */
+
 package com.zzti.fengyongge.imagepicker.model;
 import java.io.Serializable;
 

@@ -22,8 +22,9 @@ public class AlbumAdapter extends MBaseAdapter<AlbumModel> {
 		if (convertView == null) {
 			albumItem = new AlbumItem(context);
 			convertView = albumItem;
-		} else
+		} else{
 			albumItem = (AlbumItem) convertView;
+		}
 		albumItem.update(models.get(position));
 		return convertView;
 	}

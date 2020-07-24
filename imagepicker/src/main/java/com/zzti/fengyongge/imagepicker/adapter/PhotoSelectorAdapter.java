@@ -53,7 +53,8 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		SelectPhotoItem item = null;
 		TextView tvCamera = null;
-		if (position == 0 && StringUtils.isNull(models.get(position).getOriginalPath())) { // 当时第一个时，显示按钮
+		// 当时第一个时，显示按钮
+		if (position == 0 && StringUtils.isNull(models.get(position).getOriginalPath())) {
 			if (convertView == null || !(convertView instanceof TextView)) {
 				tvCamera = (TextView) LayoutInflater.from(context).inflate(R.layout.view_camera, null);
 				tvCamera.setHeight(itemWidth);

@@ -1,7 +1,6 @@
 package com.zzti.fengyongge.imagepicker.util;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,10 +10,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,43 +22,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.logging.Logger;
 
-public class ImageUtils {
-
-    private static File image_file;
-
-    /**
-     * 创建一条图片地址uri,用于保存拍照后的照片
-     * @param context
-     * @return 图片的uri
-     */
-    public static Uri createImagePathUri(Context context) {
-        Uri imageFilePath = null;
-        String status = Environment.getExternalStorageState();
-        SimpleDateFormat timeFormatter = new SimpleDateFormat(
-                "yyyyMMdd_HHmmss", Locale.CHINA);
-        long time = System.currentTimeMillis();
-        String imageName = timeFormatter.format(new Date(time));
-        // ContentValues是我们希望这条记录被创建时包含的数据信息
-        ContentValues values = new ContentValues(3);
-        values.put(MediaColumns.DISPLAY_NAME, imageName);
-        values.put(ImageColumns.DATE_TAKEN, time);
-        values.put(MediaColumns.MIME_TYPE, "image/jpeg");
-        if (status.equals(Environment.MEDIA_MOUNTED)) {// 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
-            imageFilePath = context.getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        } else {
-            imageFilePath = context.getContentResolver().insert(
-                    MediaStore.Images.Media.INTERNAL_CONTENT_URI, values);
-        }
-        Log.i("fyg", "生成的照片输出路径：" + imageFilePath.toString());
-        return imageFilePath;
-    }
+/**
+ * @author fengyongge
+ */
+public final class ImageUtils {
 
 
     /**
@@ -70,27 +34,25 @@ public class ImageUtils {
      * @param context
      * @param mImageUrl
      */
-    public static void loadImage(final Context context, String mImageUrl) {
-
+    public static void downloadImage(final Context context, String mImageUrl) {
         ImageLoader.getInstance().loadImage(mImageUrl,
                 new ImageLoadingListener() {
 
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
-                        // TODO Auto-generated method stub
 
                     }
 
                     @Override
                     public void onLoadingFailed(String imageUri, View view,
                                                 FailReason failReason) {
-                        // TODO Auto-generated method stub
 
                     }
 
                     @Override
                     public void onLoadingComplete(String imageUri, View view,
                                                   Bitmap loadedImage) {
+                        File image_file;
 
                         try {
                             image_file = new File(Environment.getExternalStorageDirectory(), "imagepicker");
@@ -125,18 +87,16 @@ public class ImageUtils {
 
                             loadedImage.recycle();
                             loadedImage = null;
-                            scanPhoto(context, image_file.getAbsolutePath());  //刷新到相册
+                            scanPhoto(context, image_file.getAbsolutePath());
 
                         } catch (Exception e) {
-                            // TODO: handle exception
-                            Log.i("fyg","保存失败："+e.getMessage());
+                            LogUtils.log("保存失败："+e.getMessage());
                         }
 
                     }
 
                     @Override
                     public void onLoadingCancelled(String imageUri, View view) {
-                        // TODO Auto-generated method stub
 
                     }
                 });
@@ -166,8 +126,9 @@ public class ImageUtils {
         } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
             be = (int) (newOpts.outHeight / hh);
         }
-        if (be <= 0)
+        if (be <= 0){
             be = 1;
+        }
         newOpts.inSampleSize = be;//设置缩放比例
         newOpts.inPreferredConfig = Bitmap.Config.ARGB_8888;
         newOpts.inPurgeable = true;
@@ -288,30 +249,7 @@ public class ImageUtils {
         return cursor.getString(column_index);
     }
 
-
-    public static Bitmap convertToBitmap(String path, int w, int h) {
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        // 设置为ture只获取图片大小
-        opts.inJustDecodeBounds = true;
-        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        // 返回为空
-        BitmapFactory.decodeFile(path, opts);
-        int width = opts.outWidth;
-        int height = opts.outHeight;
-        float scaleWidth = 0.f, scaleHeight = 0.f;
-        if (width > w || height > h) {
-            // 缩放
-            scaleWidth = ((float) width) / w;
-            scaleHeight = ((float) height) / h;
-        }
-        opts.inJustDecodeBounds = false;
-        float scale = Math.max(scaleWidth,scaleHeight);
-        opts.inSampleSize = (int)scale;
-        WeakReference<Bitmap> weak = new WeakReference<Bitmap>(BitmapFactory.decodeFile(path, opts));
-        return Bitmap.createScaledBitmap(weak.get(), w, h, true);
-    }
-
-
+    /** 刷新图库 */
     public static void scanPhoto(Context context,String imgFileName) {
         Intent mediaScanIntent = new Intent(
                 Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);

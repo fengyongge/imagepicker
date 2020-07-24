@@ -70,15 +70,15 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	private PhotoSelectorDomain photoSelectorDomain;
 	private RelativeLayout layoutAlbum;
 	public static ArrayList<PhotoModel> selected = new ArrayList<PhotoModel>();;
-	private ArrayList<String> img_path = new ArrayList<String>();
-	private String path_name;
+	private ArrayList<String> imagePathList = new ArrayList<String>();
+	private String pathName;
 	private int limit;
 	private Handler handler = new Handler(){
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			Intent data = new Intent();
 			Bundle bundle = new Bundle();
-			bundle.putSerializable("photos", img_path);
+			bundle.putSerializable("photos", imagePathList);
 			data.putExtras(bundle);
 			setResult(RESULT_OK, data);
 			finish();
@@ -88,9 +88,15 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photoselector);
+		initView();
+		initOnclick();
 		initImageLoader();
+		writeTask();
+	}
+
+	void initView(){
 		limit = getIntent().getIntExtra("limit", 0);
 		photoSelectorDomain = new PhotoSelectorDomain(getApplicationContext());
 		tvTitle = (TextView) findViewById(R.id.tv_title_lh);
@@ -100,11 +106,13 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		tvAlbum = (TextView) findViewById(R.id.tv_album_ar);
 		tvPreview = (TextView) findViewById(R.id.tv_preview_ar);
 		layoutAlbum = (RelativeLayout) findViewById(R.id.layout_album_ar);
+	}
+
+	void initOnclick(){
 		btnOk.setOnClickListener(this);
 		tvAlbum.setOnClickListener(this);
 		tvPreview.setOnClickListener(this);
 		findViewById(R.id.bv_back_lh).setOnClickListener(this);
-		writeTask();
 	}
 
 
@@ -139,44 +147,46 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btn_right_lh)
+		int id = v.getId();
+		if (id == R.id.btn_right_lh){
 			ok();
-		else if (v.getId() == R.id.tv_album_ar)
+		} else if (id == R.id.tv_album_ar){
 			album();
-		else if (v.getId() == R.id.tv_preview_ar)
+		} else if (v.getId() == R.id.tv_preview_ar){
 			priview();
-		else if (v.getId() == R.id.tv_camera_vc)
+		}else if (v.getId() == R.id.tv_camera_vc){
 			cameraTask();
-		else if (v.getId() == R.id.bv_back_lh)
+		} else if (v.getId() == R.id.bv_back_lh){
 			finish();
+		}
 	}
 
 	/** 拍照 */
 	private void catchPicture() {
-		path_name = "image"+(Math.round((Math.random()*9+1)*100000))+".jpg";
+		pathName = "image"+(Math.round((Math.random()*9+1)*100000))+".jpg";
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// 下面这句指定调用相机拍照后的照片存储的路径
 		intent.putExtra(MediaStore.EXTRA_OUTPUT,
 				FileProviderUtil.getFileUri(PhotoSelectorActivity.this,
 						new File(Environment.getExternalStorageDirectory(),
-								path_name),
+								pathName),
 						this.getPackageName()+".fileprovider"));
 		startActivityForResult(intent, 2);
 	}
 
-
+	/** 复制图片 */
 	private String cropImage(Bitmap cropImage){
 		if (cropImage == null) {
 			return null;
 		}else {
-
 			File appDir = new File(Environment.getExternalStorageDirectory(), "imagePicker");
 			if (!appDir.exists()) {
 				appDir.mkdir();
 			}
-			String path_name = appDir.getAbsolutePath()+File.separator+System.currentTimeMillis()+".jpg";
-			FileUtils.writeImage(cropImage, path_name, 100);
-			return path_name;
+//			String pathName = FileUtils.getCharacterAndNumber("IMG_", ".jpg");
+			String pathName = appDir.getAbsolutePath()+File.separator+System.currentTimeMillis()+".jpg";
+			FileUtils.writeImage(cropImage, pathName, 100);
+			return pathName;
 		}
 
 	}
@@ -185,7 +195,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 2 ) {
 			if (resultCode == -1) {
-				File takefile = new File(Environment.getExternalStorageDirectory(), path_name);
+				File takefile = new File(Environment.getExternalStorageDirectory(), pathName);
 				PhotoModel photoModel = new PhotoModel(takefile.getAbsolutePath());
 				selected.clear();
 				selected.add(photoModel);
@@ -203,7 +213,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 			setResult(RESULT_CANCELED);
 			finish();
 		} else {
-			img_path.clear();
+			imagePathList.clear();
 			new Thread() {
 				private String cropImage;
 				@Override
@@ -217,7 +227,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 							cropImage = cropImage(ImageUtils.rotateBitmapByDegree(ImageUtils.getimage(selected.get(i).getOriginalPath()), degree));
 						}
 						if (StringUtils.isNotEmpty(cropImage)) {
-							img_path.add(cropImage);
+							imagePathList.add(cropImage);
 						}
 					}
 					handler.sendEmptyMessage(0);
@@ -298,8 +308,9 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	public void onBackPressed() {
 		if (layoutAlbum.getVisibility() == View.VISIBLE) {
 			hideAlbum();
-		} else
+		} else{
 			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -321,10 +332,12 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 		tvTitle.setText(current.getName());
 
 		// 更新照片列表
-		if (current.getName().equals(RECCENT_PHOTO))
+		if (current.getName().equals(RECCENT_PHOTO)){
 			photoSelectorDomain.getReccent(reccentListener);
-		else
+		}
+		else{
 			photoSelectorDomain.getAlbum(current.getName(), reccentListener); // 获取选中相册的照片
+		}
 	}
 
 
@@ -408,10 +421,10 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	public void onPermissionsDenied(int requestCode, List<String> perms) {
 		// (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
 		// This will display a dialog directing them to enable the permission in app settings.
-		new AppSettingsDialog.Builder(this, getString(R.string.rationale_ask_again))
+		new AppSettingsDialog.Builder(PhotoSelectorActivity.this)
 				.setTitle(getString(R.string.title_settings_dialog))
 				.setPositiveButton(getString(R.string.setting))
-				.setNegativeButton(getString(R.string.cancel), null /* click listener */)
+				.setNegativeButton(getString(R.string.cancel))
 				.setRequestCode(RC_SETTINGS_SCREEN)
 				.build()
 				.show();

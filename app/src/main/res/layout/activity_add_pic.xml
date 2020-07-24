@@ -27,7 +27,7 @@
         android:orientation="horizontal"
         android:paddingBottom="10dp" >
 
-        <com.zzti.fengongge.imagepickerdemo.view.MyGridView
+        <com.zzti.fengyongge.imagepickersample.view.MyGridView
             android:id="@+id/my_goods_GV"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

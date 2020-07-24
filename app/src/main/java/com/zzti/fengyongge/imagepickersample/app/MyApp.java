@@ -1,4 +1,4 @@
-package com.zzti.fengongge.imagepickerdemo.app;
+package com.zzti.fengyongge.imagepickersample.app;
 
 import android.app.Application;
 
@@ -6,10 +6,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-/**
- * @author fengyongge
- * @Description
- */
 public class MyApp extends Application {
     @Override
     public void onCreate() {

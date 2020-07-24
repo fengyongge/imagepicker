@@ -12,7 +12,7 @@ import android.util.DisplayMetrics;
 /**
  * 通用工具类
  */
-public class CommonUtils {
+public final class CommonUtils {
 
 	/**
 	 * 开启activity

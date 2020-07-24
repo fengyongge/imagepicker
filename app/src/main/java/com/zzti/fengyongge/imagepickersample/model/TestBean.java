@@ -1,13 +1,10 @@
-package com.zzti.fengongge.imagepickerdemo.model;
+package com.zzti.fengyongge.imagepickersample.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author fengyongge
- * @Description
- */
+
 public class TestBean implements Serializable {
 
     private  String  img_thumb = "";
