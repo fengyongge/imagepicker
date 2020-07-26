@@ -26,15 +26,17 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	private SelectPhotoItem.onItemClickListener mCallback;
 	private OnClickListener cameraListener;
 	private int limit;
+	private boolean isShowCamera;
 	private PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models) {
 		super(context, models);
 	}
 
-	public PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models, int screenWidth,
+	public PhotoSelectorAdapter(Context context,boolean isShowCamera, ArrayList<PhotoModel> models, int screenWidth,
 								SelectPhotoItem.onPhotoItemCheckedListener listener,
 								SelectPhotoItem.onItemClickListener mCallback, OnClickListener cameraListener, int limit) {
 		this(context, models);
 		setItemWidth(screenWidth);
+		this.isShowCamera = isShowCamera;
 		this.listener = listener;
 		this.mCallback = mCallback;
 		this.limit = limit;
@@ -74,6 +76,7 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 			item.setSelected(models.get(position).isChecked());
 			item.setOnClickListener(mCallback, position);
 		}
+
 		return convertView;
 	}
 }

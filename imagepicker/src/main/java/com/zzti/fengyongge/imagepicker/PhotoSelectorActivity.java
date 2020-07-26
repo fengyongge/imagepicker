@@ -72,6 +72,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	public static ArrayList<PhotoModel> selected = new ArrayList<PhotoModel>();;
 	private ArrayList<String> imagePathList = new ArrayList<String>();
 	private String pathName;
+	private boolean isShowCamera;
 	private int limit;
 	private Handler handler = new Handler(){
 		@Override
@@ -97,7 +98,8 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 	}
 
 	void initView(){
-		limit = getIntent().getIntExtra("limit", 0);
+		isShowCamera = getIntent().getBooleanExtra(ImagePickerInstance.IS_SHOW_CAMERA, true);
+		limit = getIntent().getIntExtra(ImagePickerInstance.LIMIT, 0);
 		photoSelectorDomain = new PhotoSelectorDomain(getApplicationContext());
 		tvTitle = (TextView) findViewById(R.id.tv_title_lh);
 		gvPhotos = (GridView) findViewById(R.id.gv_photos_ar);
@@ -117,12 +119,17 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
 
 	public void initImageLoader(){
-		DisplayImageOptions defaultDisplayImageOptions = new DisplayImageOptions.Builder() //
-				.considerExifParams(true) // 调整图片方向
-				.resetViewBeforeLoading(true) // 载入之前重置ImageView
-				.showImageOnLoading(R.drawable.ic_picture_loading) // 载入时图片设置为黑色
-				.showImageOnFail(R.drawable.ic_picture_loadfailed) // 加载失败时显示的图片
-				.delayBeforeLoading(0) // 载入之前的延迟时间
+		DisplayImageOptions defaultDisplayImageOptions = new DisplayImageOptions.Builder()
+				// 调整图片方向
+				.considerExifParams(true)
+				// 载入之前重置ImageView
+				.resetViewBeforeLoading(true)
+				// 载入时图片设置为黑色
+				.showImageOnLoading(R.drawable.ic_picture_loading)
+				// 加载失败时显示的图片
+				.showImageOnFail(R.drawable.ic_picture_loadfailed)
+				// 载入之前的延迟时间
+				.delayBeforeLoading(0)
 				.build();
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
 				.defaultDisplayImageOptions(defaultDisplayImageOptions).memoryCacheExtraOptions(480, 800)
@@ -132,15 +139,16 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
 
 	public void showPic(){
-		photoAdapter = new PhotoSelectorAdapter(getApplicationContext(), new ArrayList<PhotoModel>(),
+		photoAdapter = new PhotoSelectorAdapter(getApplicationContext(),isShowCamera, new ArrayList<PhotoModel>(),
 				CommonUtils.getWidthPixels(this), this, this, this,limit);
 		gvPhotos.setAdapter(photoAdapter);
 		albumAdapter = new AlbumAdapter(getApplicationContext(), new ArrayList<AlbumModel>());
 		lvAblum.setAdapter(albumAdapter);
 		lvAblum.setOnItemClickListener(this);
-
-		photoSelectorDomain.getReccent(reccentListener); // 更新最近照片
-		photoSelectorDomain.updateAlbum(albumListener); // 更新相册信息
+		// 更新最近照片
+		photoSelectorDomain.getReccent(reccentListener);
+		// 更新相册信息
+		photoSelectorDomain.updateAlbum(albumListener);
 	}
 
 

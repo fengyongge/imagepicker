@@ -1,6 +1,5 @@
 package com.zzti.fengyongge.imagepickersample;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Display;
@@ -12,19 +11,20 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzti.fengongge.imagepickersample.R;
+import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
+import com.zzti.fengyongge.imagepicker.model.PhotoModel;
+import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepickersample.model.UploadGoodsBean;
 import com.zzti.fengyongge.imagepickersample.utils.Config;
 import com.zzti.fengyongge.imagepickersample.utils.SizeUtils;
 import com.zzti.fengyongge.imagepickersample.view.MyGridView;
-import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
-import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
-import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.CommonUtils;
-import com.zzti.fengyongge.imagepicker.util.FileUtils;
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class AddPicActivity extends AppCompatActivity {
     private int screen_widthOffset;
     private MyGridView myGridView;
     private GridImgAdapter gridImgsAdapter;
+    private int requestCodeNum = 0;
 
     /** */
 
@@ -99,10 +100,8 @@ public class AddPicActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View arg0) {
 
-                        Intent intent = new Intent(AddPicActivity.this, PhotoSelectorActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent.putExtra("limit", 9 - (imageList.size() - 1));
-                        startActivityForResult(intent, 0);
+                        int limit = 9 - (imageList.size() - 1);
+                        ImagePickerInstance.getInstance().photoSelect(AddPicActivity.this,limit,false,requestCodeNum);
                     }
                 });
 
@@ -142,7 +141,7 @@ public class AddPicActivity extends AppCompatActivity {
                                     tempList.add(photoModel);
                                 }
                             }
-                            photoPreview(AddPicActivity.this,tempList,position,false);
+                        ImagePickerInstance.getInstance().photoPreview(AddPicActivity.this,tempList,position,false);
 
                     }
                 });
@@ -182,16 +181,6 @@ public class AddPicActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    void photoPreview(Context context, List<PhotoModel> tempList, int positon, boolean isSave){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("photos", (ArrayList<PhotoModel>) tempList);
-        bundle.putInt("position", positon);
-        bundle.putBoolean("isSave", isSave);
-        CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
-    }
-
-
 
 
 }

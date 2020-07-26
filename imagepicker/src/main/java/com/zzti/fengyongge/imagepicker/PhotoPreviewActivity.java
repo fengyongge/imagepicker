@@ -32,10 +32,10 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 		if (extras == null){
 			return;
 		}
-		isSave = extras.getBoolean("isSave",false);
-		if (extras.containsKey("photos")) {
-			this.photos = (List<PhotoModel>) extras.getSerializable("photos");
-			this.current = extras.getInt("position", 0);
+		isSave = extras.getBoolean(ImagePickerInstance.IS_SAVE,false);
+		if (extras.containsKey(ImagePickerInstance.PHOTOS)) {
+			this.photos = (List<PhotoModel>) extras.getSerializable(ImagePickerInstance.PHOTOS);
+			this.current = extras.getInt(ImagePickerInstance.POSITION, 0);
 			// 是否保存（一般保存网络图片，本地图片只能查看）
 			if(isSave){
 				bindData(true);

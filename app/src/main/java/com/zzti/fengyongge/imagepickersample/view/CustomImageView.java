@@ -3,14 +3,12 @@ package com.zzti.fengyongge.imagepickersample.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
 import androidx.appcompat.widget.AppCompatImageView;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 
 public class CustomImageView extends AppCompatImageView {
@@ -60,7 +58,6 @@ public class CustomImageView extends AppCompatImageView {
 
     @Override
     public void onDetachedFromWindow() {
-        Picasso.with(getContext()).cancelRequest(this);
         isAttachedToWindow = false;
         setImageBitmap(null);
         super.onDetachedFromWindow();
@@ -71,8 +68,7 @@ public class CustomImageView extends AppCompatImageView {
         if (!TextUtils.isEmpty(url)) {
             this.url = url;
             if (isAttachedToWindow) {
-                Picasso.with(getContext()).load(url).into(this);
-
+                ImageLoader.getInstance().displayImage( url, this);
             }
         }
     }

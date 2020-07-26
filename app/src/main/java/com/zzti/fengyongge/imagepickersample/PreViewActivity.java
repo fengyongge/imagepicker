@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zzti.fengongge.imagepickersample.R;
+import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
 import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
@@ -96,7 +97,7 @@ public class PreViewActivity extends AppCompatActivity {
                             photoModel.setOriginalPath(dataList.get(position).getPic().get(i));
                             tempList.add(photoModel);
                         }
-                        photoPreview(PreViewActivity.this,tempList,position,true);
+                        ImagePickerInstance.getInstance().photoPreview(PreViewActivity.this,tempList,position,true);
                     }
                 });
             } else {
@@ -137,13 +138,7 @@ public class PreViewActivity extends AppCompatActivity {
         }
     }
 
-    void photoPreview(Context context,List<PhotoModel> tempList,int positon,boolean isSave){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("photos", (ArrayList<PhotoModel>) tempList);
-        bundle.putInt("position", positon);
-        bundle.putBoolean("isSave", isSave);
-        CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
-    }
+
 
 
 
