@@ -1,6 +1,7 @@
 package com.zzti.fengyongge.imagepicker;
 
 import android.os.Bundle;
+import android.view.Window;
 
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;

@@ -39,7 +39,7 @@ public class BasePhotoPreviewActivity extends AppCompatActivity implements ViewP
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photopreview);
 		initView();
 		initOnclick();
@@ -51,7 +51,7 @@ public class BasePhotoPreviewActivity extends AppCompatActivity implements ViewP
 		tvPercent = (TextView) findViewById(R.id.tv_percent_app);
 		mViewPager = (ViewPager) findViewById(R.id.vp_base_app);
 		overridePendingTransition(R.anim.activity_alpha_action_in, 0);
-		layoutTop.setVisibility(View.GONE);
+//		layoutTop.setVisibility(View.GONE);
 	}
 
 	void initOnclick(){

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -191,7 +190,6 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 			if (!appDir.exists()) {
 				appDir.mkdir();
 			}
-//			String pathName = FileUtils.getCharacterAndNumber("IMG_", ".jpg");
 			String pathName = appDir.getAbsolutePath()+File.separator+System.currentTimeMillis()+".jpg";
 			FileUtils.writeImage(cropImage, pathName, 100);
 			return pathName;
@@ -351,12 +349,12 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
 	/** 获取本地图库照片回调 */
 	public interface OnLocalReccentListener {
-		public void onPhotoLoaded(List<PhotoModel> photos);
+		 void onPhotoLoaded(List<PhotoModel> photos);
 	}
 
 	/** 获取本地相册信息回调 */
 	public interface OnLocalAlbumListener {
-		public void onAlbumLoaded(List<AlbumModel> albums);
+		 void onAlbumLoaded(List<AlbumModel> albums);
 	}
 
 	private OnLocalAlbumListener albumListener = new OnLocalAlbumListener() {

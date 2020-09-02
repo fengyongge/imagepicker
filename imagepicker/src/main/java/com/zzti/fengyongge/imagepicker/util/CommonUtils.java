@@ -3,18 +3,9 @@ package com.zzti.fengyongge.imagepicker.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore.MediaColumns;
 import android.util.DisplayMetrics;
 
-import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
-import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
-import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 通用工具类
