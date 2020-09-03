@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 //ext{
 //    PUBLISH_GROUP_ID = 'com.zzti.fengyongge'
 //    PUBLISH_ARTIFACT_ID = 'imagepicker'
-//    PUBLISH_VERSION = '1.4.0'
+//    PUBLISH_VERSION = '1.4.1'
 //}
 
 android {
@@ -41,5 +41,5 @@ dependencies {
 //}
 
 // ./gradlew clean build bintrayUpload -PbintrayUser=username -PbintrayKey=APIKey -PdryRun=false
-
+//        ./gradlew clean build generateRelease
 //apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
