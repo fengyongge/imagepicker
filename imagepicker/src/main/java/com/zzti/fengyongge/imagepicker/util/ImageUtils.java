@@ -104,16 +104,14 @@ public final class ImageUtils {
      * 复制图片
      */
     public static String getCropImagePath(Bitmap bitmap) {
-        File takeImageFile;
         if (bitmap == null) {
             return null;
         } else {
-            takeImageFile = FileUtils.getCreatFilePath();
+            File takeImageFile = FileUtils.getCreatFilePath();
             FileUtils.writeImage(bitmap, takeImageFile.getAbsolutePath(), 100);
             return takeImageFile.getAbsolutePath();
         }
     }
-
 
     /**
      * 根据路径，生成bitmip

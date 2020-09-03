@@ -324,8 +324,7 @@ public final class FileUtils
         if (!folder.exists() || !folder.isDirectory()) {
             folder.mkdirs();
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
-        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        String filename = prefix + System.currentTimeMillis() + suffix;
         return new File(folder, filename);
     }
 
