@@ -44,7 +44,7 @@ v1.0(2016/8/4)
 ## 如何引用
 * 配置gradle依赖
 ```java
-compile 'com.zzti.fengyongge:imagepicker:1.4.0'
+implementation 'com.zzti.fengyongge:imagepicker:1.4.1'
 ```
 
 * 配置清单文件所需activity和provider权限
