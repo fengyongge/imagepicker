@@ -2,21 +2,16 @@ package com.zzti.fengyongge.imagepickersample.view;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
+import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.CommonUtils;
-import com.zzti.fengyongge.imagepickersample.PreViewActivity;
 import com.zzti.fengyongge.imagepickersample.utils.ScreenTools;
 import com.zzti.fengyongge.imagepickersample.utils.SizeUtils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,8 +22,8 @@ public class NineGridlayout extends ViewGroup {
      * 图片之间的间隔
      */
     private int gap = 10;
-    private int columns;//
-    private int rows;//
+    private int columns;
+    private int rows;
     private List listData;
     private int totalWidth;
     private Context context;
@@ -81,9 +76,8 @@ public class NineGridlayout extends ViewGroup {
 				@Override
 				public void onClick(View arg0) {
                     //展示多张图片
-                    photoPreview(context,listData,(Integer)arg0.getTag(),true);
-
-				}
+                    ImagePickerInstance.getInstance().photoPreview(context,listData,(Integer)arg0.getTag(),true);
+                }
 			});
             childrenView.setOnLongClickListener(new OnLongClickListener() {
 				
@@ -192,15 +186,6 @@ public class NineGridlayout extends ViewGroup {
         this.gap = gap;
     }
 
-
-
-    void photoPreview(Context context,List<PhotoModel> tempList,int positon,boolean isSave){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("photos", (ArrayList<PhotoModel>) tempList);
-        bundle.putInt("position", positon);
-        bundle.putBoolean("isSave", isSave);
-        CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
-    }
 
 
 }

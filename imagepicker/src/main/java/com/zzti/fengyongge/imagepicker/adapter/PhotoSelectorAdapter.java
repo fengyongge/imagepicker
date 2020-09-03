@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zzti.fengongge.imagepicker.R;
@@ -26,17 +27,15 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	private SelectPhotoItem.onItemClickListener mCallback;
 	private OnClickListener cameraListener;
 	private int limit;
-	private boolean isShowCamera;
 	private PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models) {
 		super(context, models);
 	}
 
-	public PhotoSelectorAdapter(Context context,boolean isShowCamera, ArrayList<PhotoModel> models, int screenWidth,
+	public PhotoSelectorAdapter(Context context,ArrayList<PhotoModel> models, int screenWidth,
 								SelectPhotoItem.onPhotoItemCheckedListener listener,
 								SelectPhotoItem.onItemClickListener mCallback, OnClickListener cameraListener, int limit) {
 		this(context, models);
 		setItemWidth(screenWidth);
-		this.isShowCamera = isShowCamera;
 		this.listener = listener;
 		this.mCallback = mCallback;
 		this.limit = limit;
@@ -54,14 +53,13 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		SelectPhotoItem item = null;
-		TextView tvCamera = null;
+		RelativeLayout rlCamera = null;
 		// 当时第一个时，显示按钮
 		if (position == 0 && StringUtils.isNull(models.get(position).getOriginalPath())) {
-			if (convertView == null || !(convertView instanceof TextView)) {
-				tvCamera = (TextView) LayoutInflater.from(context).inflate(R.layout.view_camera, null);
-				tvCamera.setHeight(itemWidth);
-				tvCamera.setWidth(itemWidth);
-				convertView = tvCamera;
+			if (convertView == null || !(convertView instanceof RelativeLayout)) {
+				rlCamera = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_camera, null);
+				rlCamera.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));
+				convertView = rlCamera;
 			}
 			convertView.setOnClickListener(cameraListener);
 		} else { // 显示图片
@@ -76,7 +74,6 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 			item.setSelected(models.get(position).isChecked());
 			item.setOnClickListener(mCallback, position);
 		}
-
 		return convertView;
 	}
 }

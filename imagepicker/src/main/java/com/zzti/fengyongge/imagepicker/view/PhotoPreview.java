@@ -66,9 +66,14 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 	public void loadImage(PhotoModel photoModel, Boolean is_save) {
 		if (is_save) {
 			save_bt.setVisibility(View.VISIBLE);
-			loadImage(photoModel.getOriginalPath());
 		} else {
 			save_bt.setVisibility(View.GONE);
+		}
+
+		//根据是否是网络图片，调用不同展示
+		if(photoModel.getOriginalPath().contains("http")||photoModel.getOriginalPath().contains("https")){
+			loadImage(photoModel.getOriginalPath());
+		}else{
 			loadImage("file://" + photoModel.getOriginalPath());
 		}
 

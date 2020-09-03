@@ -97,7 +97,7 @@ public class PreViewActivity extends AppCompatActivity {
                             photoModel.setOriginalPath(dataList.get(position).getPic().get(i));
                             tempList.add(photoModel);
                         }
-                        ImagePickerInstance.getInstance().photoPreview(PreViewActivity.this,tempList,position,true);
+                        ImagePickerInstance.getInstance().photoPreview(PreViewActivity.this,tempList,position,false);
                     }
                 });
             } else {

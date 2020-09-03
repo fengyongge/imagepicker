@@ -3,43 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
 
     <RelativeLayout
-        android:id="@+id/layout_top_app"
+        android:id="@+id/rlTopTitle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_alignParentTop="true"
-        android:background="@color/black_3f">
+        android:background="@color/black_3f"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
 
-        <ImageButton
-            android:id="@+id/btn_back_app"
+
+        <ImageView
+            android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/app_back_white" />
+            android:padding="12dp"
+            android:background="@drawable/ic_arrow_back"
+            />
 
-        <TextView
-            android:id="@+id/tv_line_apu"
+        <View
+            android:id="@+id/viewLine"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toRightOf="@+id/btn_back_app" />
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ivBack"
+            android:background="@android:color/black"/>
+
 
         <TextView
-            android:id="@+id/tv_percent_app"
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/viewLine"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            tools:text="标题"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tvPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingRight="10dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            tools:text="2/100" />
+            tools:text="3/9"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:background="@drawable/shape_green_bg"
+            />
     </RelativeLayout>
 
 

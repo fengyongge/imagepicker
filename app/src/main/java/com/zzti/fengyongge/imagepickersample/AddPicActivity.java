@@ -101,7 +101,7 @@ public class AddPicActivity extends AppCompatActivity {
                     public void onClick(View arg0) {
 
                         int limit = 9 - (imageList.size() - 1);
-                        ImagePickerInstance.getInstance().photoSelect(AddPicActivity.this,limit,false,requestCodeNum);
+                        ImagePickerInstance.getInstance().photoSelect(AddPicActivity.this,limit,true,requestCodeNum);
                     }
                 });
 

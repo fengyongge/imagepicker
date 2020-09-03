@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by fengyongge on 2020/7/26
+ * describe
+ * 对外API
+ * @author fengyongge(fengyongge98@gmail.com)
+ * @version
+ * @date 2020/7/26
  */
 public class ImagePickerInstance {
 
@@ -38,8 +42,13 @@ public class ImagePickerInstance {
         return mInstance;
     }
 
+
     /**
      * 对外开放的图片预览方法
+     * @param context
+     * @param tempList 浏览图片集合，注意！必须封装成imagepicker的bean，url支持网络或者本地
+     * @param positon  角标
+     * @param isSave 是否支持保存
      */
     public void photoPreview(Context context, List<PhotoModel> tempList, int positon, boolean isSave) {
         Bundle bundle = new Bundle();
@@ -49,8 +58,13 @@ public class ImagePickerInstance {
         CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
     }
 
+
     /**
      * 对外图库选择图片,或者拍照选择图片方法
+     * @param context
+     * @param limit  选择图片张数
+     * @param isShowCamera 是否支持拍照
+     * @param requestCode
      */
     public void photoSelect(Context context, int limit, boolean isShowCamera,int requestCode) {
         Intent intent = new Intent(context, PhotoSelectorActivity.class);
