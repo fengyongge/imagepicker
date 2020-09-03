@@ -1,16 +1,13 @@
 package com.zzti.fengyongge.imagepicker.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -87,7 +84,7 @@ public final class ImageUtils {
 
                             loadedImage.recycle();
                             loadedImage = null;
-                            scanPhoto(context, image_file.getAbsolutePath());
+                            FileUtils.updateGallery(context, image_file);
 
                         } catch (Exception e) {
                             LogUtils.log("保存失败："+e.getMessage());
@@ -104,11 +101,26 @@ public final class ImageUtils {
 
 
     /**
+     * 复制图片
+     */
+    public static String getCropImagePath(Bitmap bitmap) {
+        File takeImageFile;
+        if (bitmap == null) {
+            return null;
+        } else {
+            takeImageFile = FileUtils.getCreatFilePath();
+            FileUtils.writeImage(bitmap, takeImageFile.getAbsolutePath(), 100);
+            return takeImageFile.getAbsolutePath();
+        }
+    }
+
+
+    /**
      * 根据路径，生成bitmip
      * @param srcPath
      * @return
      */
-    public static Bitmap getimage(String srcPath) {
+    public static Bitmap getImage(String srcPath) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
         newOpts.inJustDecodeBounds = true;
@@ -227,36 +239,6 @@ public final class ImageUtils {
             e.printStackTrace();
         }
         return degree;
-    }
-
-
-
-
-    /**
-     *  URI转绝对路径
-     * @param activity
-     * @param uri
-     * @return
-     */
-    public static String getAbsoluteImagePath(Activity activity,Uri uri) {
-        // can post image
-        String[] proj = { MediaColumns.DATA };
-        Cursor cursor = activity.managedQuery(uri, proj,null,null,null);
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
-        cursor.moveToFirst();
-
-        return cursor.getString(column_index);
-    }
-
-    /** 刷新图库 */
-    public static void scanPhoto(Context context,String imgFileName) {
-        Intent mediaScanIntent = new Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File file = new File(imgFileName);
-        Uri contentUri = Uri.fromFile(file);
-        mediaScanIntent.setData(contentUri);
-        context.sendBroadcast(mediaScanIntent);
     }
 
 }

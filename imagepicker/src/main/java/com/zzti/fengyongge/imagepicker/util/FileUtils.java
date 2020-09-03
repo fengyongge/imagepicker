@@ -1,7 +1,14 @@
 package com.zzti.fengyongge.imagepicker.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
+
+import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
+import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,6 +52,7 @@ public final class FileUtils
             CURRENT_PATH = LOCAL_PATH;
         }
     }
+
 
     /**
      * 将数据写入一个文件
@@ -267,7 +275,6 @@ public final class FileUtils
                 {
                     file.getParentFile().mkdirs();
                 }
-
                 return file.createNewFile();
             }
         } catch (IOException e)
@@ -276,6 +283,52 @@ public final class FileUtils
         }
         return true;
     }
+
+
+
+    /**
+     * 获取拍照图片图库地址
+     */
+    public static File getCreatFilePath(){
+        File takeImageFile;
+        if (existSDCard()){
+            takeImageFile = new File(Environment.getExternalStorageDirectory(), "/DCIM/camera/");
+        }else {
+            takeImageFile = Environment.getDataDirectory();
+        }
+        takeImageFile = FileUtils.createFile(takeImageFile, "IMG_", ".jpg");
+        return takeImageFile;
+    }
+
+    /**
+     * 判断SDCard是否可用
+     */
+    public static boolean existSDCard() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * 刷新图库
+     */
+    public static void updateGallery(Context context, File file) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
+    }
+
+    /**
+     * 根据系统时间、前缀、后缀产生一个文件
+     */
+    public static File createFile(File folder, String prefix, String suffix) {
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
+        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        return new File(folder, filename);
+    }
+
 
 
 

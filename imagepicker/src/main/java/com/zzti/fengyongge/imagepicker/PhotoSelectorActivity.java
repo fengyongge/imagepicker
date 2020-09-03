@@ -4,8 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
@@ -19,9 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -40,6 +38,8 @@ import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +59,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
     private static final int WRITE_EXTERNAL_STORAGE = 123;
     private static final int RC_CAMERA_PERM = 124;
     private static final int RC_SETTINGS_SCREEN = 125;
-
-
+    private static final int CANERA_REQUEST_CODE = 200;
     private ImageView ivBack;
     private TextView tvPercent, tvTitle;
     public static final String RECCENT_PHOTO = "最近照片";
@@ -74,8 +73,9 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
     private RelativeLayout layoutAlbum;
     public static ArrayList<PhotoModel> selected = new ArrayList<PhotoModel>();
     private ArrayList<String> imagePathList = new ArrayList<String>();
-    private String pathName;
+    private File takeImageFile;
     private boolean isShowCamera;
+    private boolean isTakePhoto;
     private int limit;
     private Handler handler = new Handler() {
         @Override
@@ -85,11 +85,13 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
             bundle.putSerializable("photos", imagePathList);
             data.putExtras(bundle);
             setResult(RESULT_OK, data);
+            isTakePhoto = false;
             finish();
         }
 
-        ;
     };
+
+
 
 
     @Override
@@ -189,42 +191,26 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
     /**
      * 拍照
      */
-    private void catchPicture() {
-        pathName = "image" + (Math.round((Math.random() * 9 + 1) * 100000)) + ".jpg";
+    private void takePhoto() {
+        takeImageFile = FileUtils.getCreatFilePath();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 下面这句指定调用相机拍照后的照片存储的路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 FileProviderUtil.getFileUri(PhotoSelectorActivity.this,
-                        new File(Environment.getExternalStorageDirectory(),
-                                pathName),
+                        takeImageFile,
                         this.getPackageName() + ".fileprovider"));
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, CANERA_REQUEST_CODE);
+        isTakePhoto = true;
     }
 
-    /**
-     * 复制图片
-     */
-    private String cropImage(Bitmap cropImage) {
-        if (cropImage == null) {
-            return null;
-        } else {
-            File appDir = new File(Environment.getExternalStorageDirectory(), "imagePicker");
-            if (!appDir.exists()) {
-                appDir.mkdir();
-            }
-            String pathName = appDir.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
-            FileUtils.writeImage(cropImage, pathName, 100);
-            return pathName;
-        }
 
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2) {
+        if (requestCode == CANERA_REQUEST_CODE) {
             if (resultCode == -1) {
-                File takefile = new File(Environment.getExternalStorageDirectory(), pathName);
-                PhotoModel photoModel = new PhotoModel(takefile.getAbsolutePath());
+                PhotoModel photoModel = new PhotoModel(takeImageFile.getAbsolutePath());
                 selected.clear();
                 selected.add(photoModel);
                 ok();
@@ -248,15 +234,24 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
                 @Override
                 public void run() {
                     for (int i = 0; i < selected.size(); i++) {
+                         Bitmap handlerBitmap;
                         //防止拍照图片角度发生变化(三星)
                         int degree = ImageUtils.getBitmapDegree(selected.get(i).getOriginalPath());
-                        if (degree == 0) {
-                            cropImage = cropImage(ImageUtils.getimage(selected.get(i).getOriginalPath()));
-                        } else {
-                            cropImage = cropImage(ImageUtils.rotateBitmapByDegree(ImageUtils.getimage(selected.get(i).getOriginalPath()), degree));
+                        if(degree!=0){
+                            Bitmap tempBitmap = BitmapFactory.decodeFile(selected.get(i).getOriginalPath());
+                            handlerBitmap = ImageUtils.rotateBitmapByDegree(tempBitmap,degree);
+                        }else{
+                            //压缩处理
+                            handlerBitmap = ImageUtils.getImage(selected.get(i).getOriginalPath());
                         }
+                        //防止oom进行bitmap压缩处理
+                        cropImage = ImageUtils.getCropImagePath(handlerBitmap);
                         if (StringUtils.isNotEmpty(cropImage)) {
                             imagePathList.add(cropImage);
+                        }
+                        //拍照的图片，刷新图库
+                        if(isTakePhoto){
+                            FileUtils.updateGallery(PhotoSelectorActivity.this,takeImageFile);
                         }
                     }
                     handler.sendEmptyMessage(0);
@@ -264,6 +259,8 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
             }.start();
         }
     }
+
+
 
     /**
      * 预览照片
@@ -447,7 +444,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
     public void cameraTask() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA)) {
             // Have permission, do the thing!
-            catchPicture();
+            takePhoto();
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_camera),
@@ -462,7 +459,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
                 showPic();
                 break;
             case RC_CAMERA_PERM:
-                catchPicture();
+                takePhoto();
                 break;
         }
     }

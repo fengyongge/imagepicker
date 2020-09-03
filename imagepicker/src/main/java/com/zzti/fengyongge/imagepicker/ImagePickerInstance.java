@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

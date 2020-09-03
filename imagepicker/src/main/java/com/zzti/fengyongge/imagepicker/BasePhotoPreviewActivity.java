@@ -31,6 +31,7 @@ public class BasePhotoPreviewActivity extends AppCompatActivity{
 	private Boolean is_save;
 	private ViewPager mViewPager;
 	private RelativeLayout rlTopTitle;
+	private View viewLine;
 	private ImageView ivBack;
 	private TextView tvPercent;
 	protected boolean isUp;
@@ -46,6 +47,8 @@ public class BasePhotoPreviewActivity extends AppCompatActivity{
 	}
 
 	void initView(){
+		viewLine = findViewById(R.id.viewLine);
+		viewLine.setVisibility(View.GONE);
 		rlTopTitle = findViewById(R.id.rlTopTitle);
 		ivBack = findViewById(R.id.ivBack);
 		tvPercent =findViewById(R.id.tvPercent);

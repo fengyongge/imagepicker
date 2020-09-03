@@ -56,7 +56,9 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 	@Override
 	public void onPhotoLoaded(List<PhotoModel> photos) {
 		this.photos = photos;
+		//绑定数据，更新展示张数，不可少
 		bindData(false);
+		updatePercent(current,photos.size());
 	}
 
 
