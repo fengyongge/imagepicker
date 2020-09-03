@@ -15,10 +15,11 @@ public class MBaseAdapter<T> extends BaseAdapter {
 	protected ArrayList<T> models;
 	public MBaseAdapter(Context context, ArrayList<T> models) {
 		this.context = context;
-		if (models == null)
+		if (models == null){
 			this.models = new ArrayList<T>();
-		else
+		}else{
 			this.models = models;
+		}
 	}
 
 	@Override
@@ -46,8 +47,9 @@ public class MBaseAdapter<T> extends BaseAdapter {
 
 	
 	public void update(List<T> models) {
-		if (models == null)
+		if (models == null){
 			return;
+		}
 		this.models.clear();
 		for (T t : models) {
 			this.models.add(t);

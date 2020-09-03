@@ -1,11 +1,15 @@
 package com.zzti.fengyongge.imagepicker.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
+import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
+import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,14 +17,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
+/**
+ * @author fengyongge
+ */
 public final class FileUtils
 {
-    public static String SDCARD_PAHT ;// SD卡路径
-    public static String LOCAL_PATH ;// 本地路径,即/data/data/目录下的程序私有目录,emulate/0
-    public static String CURRENT_PATH = "";// 当前的路径,如果有SD卡的时候当前路径为SD卡，如果没有的话则为程序的私有目录
+    // SD卡路径
+    public static String SDCARD_PAHT ;
+    // 本地路径,即/data/data/目录下的程序私有目录,emulate/0
+    public static String LOCAL_PATH ;
+    // 当前的路径,如果有SD卡的时候当前路径为SD卡，如果没有的话则为程序的私有目录
+    public static String CURRENT_PATH = "";
 
     static
     {
@@ -41,25 +52,6 @@ public final class FileUtils
             CURRENT_PATH = LOCAL_PATH;
         }
     }
-    /**
-     * 得到与当前存储路径相反的路径(当前为/data/data目录，则返回/sdcard目录;当前为/sdcard，则返回/data/data目录)
-     * @return
-     */
-    public static String getDiffPath()
-    {
-        if(CURRENT_PATH.equals(SDCARD_PAHT))
-        {
-            return LOCAL_PATH;
-        }
-        return SDCARD_PAHT;
-    }
-
-
-    public static String getDiffPath(String pathIn)
-    {
-        return pathIn.replace(CURRENT_PATH, getDiffPath());
-    }
-
 
 
     /**
@@ -144,30 +136,9 @@ public final class FileUtils
         {
             e.printStackTrace();
         }
-
         return false;
     }
 
-    public static boolean appendFile(String filename,byte[]data,int datapos,int datalength)
-    {
-        try {
-
-            createFile(filename);
-
-            RandomAccessFile rf= new RandomAccessFile(filename, "rw");
-            rf.seek(rf.length());
-            rf.write(data, datapos, datalength);
-            if(rf!=null)
-            {
-                rf.close();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
 
     /**
      * 读取文件，返回以byte数组形式的数据
@@ -273,30 +244,6 @@ public final class FileUtils
         return null;
     }
 
-    /**
-     * 将一个文件拷贝到另外一个地方
-     * @param sourceFile 源文件地址
-     * @param destFile 目的地址
-     * @param shouldOverlay 是否覆盖
-     * @return
-     */
-    public static boolean copyFiles(String sourceFile, String destFile,boolean shouldOverlay)
-    {
-        try
-        {
-            if(shouldOverlay)
-            {
-                deleteFile(destFile);
-            }
-            FileInputStream fi = new FileInputStream(sourceFile);
-            writeFile(destFile, fi);
-            return true;
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     /**
      * 判断文件是否存在
@@ -328,7 +275,6 @@ public final class FileUtils
                 {
                     file.getParentFile().mkdirs();
                 }
-
                 return file.createNewFile();
             }
         } catch (IOException e)
@@ -341,56 +287,48 @@ public final class FileUtils
 
 
     /**
-     * 删除 directoryPath目录下的所有文件，包括删除删除文件夹
-     * @param dir
+     * 获取拍照图片图库地址
      */
-    public static void deleteDirectory(File dir)
-    {
-        if (dir.isDirectory())
-        {
-            File[] listFiles = dir.listFiles();
-            for (int i = 0; i < listFiles.length ; i++)
-            {
-                deleteDirectory(listFiles[i]);
-            }
+    public static File getCreatFilePath(){
+        File takeImageFile;
+        if (existSDCard()){
+            takeImageFile = new File(Environment.getExternalStorageDirectory(), "/DCIM/camera/");
+        }else {
+            takeImageFile = Environment.getDataDirectory();
         }
-        dir.delete();
+        takeImageFile = FileUtils.createFile(takeImageFile, "IMG_", ".jpg");
+        return takeImageFile;
     }
 
     /**
-     * 字符串转流
-     * @param str
-     * @return
+     * 判断SDCard是否可用
      */
-    public static InputStream String2InputStream(String str)
-    {
-        ByteArrayInputStream stream = new ByteArrayInputStream(str.getBytes());
-        return stream;
+    public static boolean existSDCard() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
     /**
-     * 流转字符串
-     * @param is
-     * @return
+     * 刷新图库
      */
-    public static String inputStream2String(InputStream is)
-    {
-        BufferedReader in = new BufferedReader(new InputStreamReader(is));
-        StringBuffer buffer = new StringBuffer();
-        String line = "";
-
-        try
-        {
-            while ((line = in.readLine()) != null)
-            {
-                buffer.append(line);
-            }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return buffer.toString();
+    public static void updateGallery(Context context, File file) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
     }
+
+    /**
+     * 根据系统时间、前缀、后缀产生一个文件
+     */
+    public static File createFile(File folder, String prefix, String suffix) {
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
+        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        return new File(folder, filename);
+    }
+
 
 
 
@@ -403,9 +341,9 @@ public final class FileUtils
     public static void DeleteFolder(String sPath) {
         File file = new File(sPath);
         // 判断目录或文件是否存在
-        if (file.exists()) { // 不存在返回 false
-            // 判断是否为文件
-            if (file.isFile()) { // 为文件时调用删除文件方法
+        if (file.exists()) {
+            // 文件存在时调用删除文件方法
+            if (file.isFile()) {
                 deleteFile(sPath);
             } else { // 为目录时调用删除目录方法
                 deleteDirectory(sPath);
@@ -421,8 +359,7 @@ public final class FileUtils
      */
     public static boolean deleteFile(String sPath) {
         File file = new File(sPath);
-        Log.i("fyg","sPath:"+sPath);
-
+        LogUtils.log("删除文件路径"+sPath);
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists()) {
             file.delete();
@@ -457,9 +394,6 @@ public final class FileUtils
         }
     }
 
-
-
-
     /**
      * 给文件路径写入图片
      * @param bitmap
@@ -469,6 +403,7 @@ public final class FileUtils
     public static void writeImage(Bitmap bitmap,String destPath,int quality)
     {
         try {
+            //先删除再创建
             FileUtils.deleteFile(destPath);
             if (FileUtils.createFile(destPath))
             {
@@ -479,13 +414,24 @@ public final class FileUtils
                     out.close();
                     out = null;
                 }
-
                 bitmap.recycle();
                 bitmap=null;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取图片命名
+     * @param prefix
+     * @param suffix
+     * @return
+     */
+    public static String getCharacterAndNumber(String prefix, String suffix) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
+        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        return filename;
     }
 
 

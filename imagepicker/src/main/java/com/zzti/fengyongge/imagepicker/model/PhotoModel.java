@@ -1,7 +1,4 @@
-/*
- * Copyright (c) 2016, ZCJ All Rights Reserved.
- * Project Name: zcj_android-V0.21
- */
+
 package com.zzti.fengyongge.imagepicker.model;
 import java.io.Serializable;
 
@@ -11,8 +8,15 @@ import java.io.Serializable;
 public class PhotoModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	/**
+	 * 网络图片url：http://gank.io/images/f0c192e3e335400db8a709a07a891b2e 或者 https://gank.io/images/f0c192e3e335400db8a709a07a891b2e
+	 * 本地图片uri：/storage/emulated/0/imagePicker/1599114947548.jpg
+	 */
 	private String originalPath;
-	private boolean isChecked;
+	/**
+	 * 是否选中
+	 */
+	private boolean isChecked = false;
 
 	public PhotoModel(String originalPath, boolean isChecked) {
 		super();

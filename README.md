@@ -1,12 +1,19 @@
 # imagepicker(图片选择器)
 ## 图片选择器简介
-imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.3.0](https://github.com/fengyongge/imagepicker)。
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.0](https://github.com/fengyongge/imagepicker)。
 
 * 从相册里面选择图片或者拍照获取照片
 * 浏览选择的本地或者网络图片
 * 保存图片
 
 ## 更新说明
+
+v1.4.0(2020/9/3)
+-----------------
+1. Android依赖库更换AndroidX
+2. 修复所有Issues
+3. 更换调用方式，对使用者更便捷
+
 v1.3.0(2018/8/22)
 -----------------
 1. 适配7.0以及以上系统，私有文件访问受限报错
@@ -34,24 +41,29 @@ v1.0(2016/8/4)
 ## 如何引用
 * 配置gradle依赖
 ```java
-compile 'com.zzti.fengyongge:imagepicker:1.3.0'
+compile 'com.zzti.fengyongge:imagepicker:1.4.0'
 ```
 
 * 配置清单文件所需activity和provider权限
 ```java
-<activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>//选择图片
-<activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>//预览图片
 
- <!-- targetSDKVersion >= 24时才需要添加这个provider，provider的authorities属性的值为${applicationId}.fileprovider，请开发者根据自己的${applicationId}来设置这个值 -->
-    <provider
-        android:name="android.support.v4.content.FileProvider"
-        android:authorities="${applicationId}.fileprovider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/file_paths" />
-    </provider>
+   <!-- 引入imagepicker时需要注册的activity 分别为预览图片和选择图片-->
+        <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity" />
+        <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity" />
+
+   <!-- targetSDKVersion >= 24时才需要添加这个provider。
+        provider的authorities属性的值为${applicationId}.fileprovider，
+        请开发者根据自己的${applicationId}来设置这个值 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
 ```
 * 在项目结构下的res目录下添加一个xml文件夹，再新建一个file_paths.xml的文件，文件内容如下：
 ```java
@@ -68,10 +80,24 @@ compile 'com.zzti.fengyongge:imagepicker:1.3.0'
 ## 如何使用
 * 拍照或者从图库选择图片
 ```java
-Intent intent = new Intent(MainActivity.this, PhotoSelectorActivity.class);
-intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-intent.putExtra("limit", number );//number是选择图片的数量
-startActivityForResult(intent, 0);
+
+    //获取单例，调用下面方法即可，具体可参考源码sample
+     ImagePickerInstance.getInstance()
+
+  /**
+     * 对外图库选择图片,或者拍照选择图片方法
+     * @param context
+     * @param limit  选择图片张数
+     * @param isShowCamera 是否支持拍照
+     * @param requestCode
+     */
+    public void photoSelect(Context context, int limit, boolean isShowCamera,int requestCode) {
+        Intent intent = new Intent(context, PhotoSelectorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(LIMIT, limit);
+        intent.putExtra(IS_SHOW_CAMERA, isShowCamera);
+        CommonUtils.launchActivityForResult((Activity) context, intent, requestCode);
+    }
 ```
 * 获取拍照或者图片地址
 ```java
@@ -93,13 +119,26 @@ startActivityForResult(intent, 0);
 ```
 * 浏览图片
 ```java
- List<PhotoModel> single_photos = new ArrayList<PhotoModel>();
-//PhotoModel 开发者将自己本地bean的list封装成PhotoModel的list，PhotoModel属性源码可查看
- Bundle bundle = new Bundle();
- bundle.putSerializable("photos",(Serializable)single_photos);
- bundle.putInt("position", position);//position预览图片地址
- bundle.putBoolean("isSave",true);//isSave表示是否可以保存预览图片，建议只有预览网络图片时设置true
- CommonUtils.launchActivity(PreViewActivity.this, PhotoPreviewActivity.class, bundle);
+
+  //获取单例，调用下面方法即可，具体可参考源码sample
+     ImagePickerInstance.getInstance()
+
+  /**
+     * 对外开放的图片预览方法
+     * @param context
+     * @param tempList 浏览图片集合，注意！必须封装成imagepicker的bean，url支持网络或者本地
+     * @param positon  角标
+     * @param isSave 是否支持保存
+     */
+    public void photoPreview(Context context, List<PhotoModel> tempList, int positon, boolean isSave) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PHOTOS, (ArrayList<PhotoModel>) tempList);
+        bundle.putInt(POSITION, positon);
+        bundle.putBoolean(IS_SAVE, isSave);
+        CommonUtils.launchActivity(context, PhotoPreviewActivity.class, bundle);
+    }
+
+
 ```
 * 保存图片
 
@@ -112,7 +151,6 @@ startActivityForResult(intent, 0);
 
 ## 关于作者
 ```java
-Log.i("name", "fsuper");
 Log.i("homepage", "http://fengyongge.github.io/");
 Log.i("email", "fengyongge98@gmail.com");
 Log.i("motto1", "可以让步，却不可以退缩，可以羞涩，却不可以软弱");

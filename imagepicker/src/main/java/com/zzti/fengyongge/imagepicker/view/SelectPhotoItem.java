@@ -122,8 +122,9 @@ public class SelectPhotoItem extends LinearLayout implements OnCheckedChangeList
 
 	@Override
 	public void onClick(View v) {
-		if (l != null)
+		if (l != null){
 			l.onItemClick(position);
+		}
 	}
 
 	public static interface onPhotoItemCheckedListener {

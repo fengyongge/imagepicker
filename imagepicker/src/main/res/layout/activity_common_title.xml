@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/rlTopTitle"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/black_3f"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="12dp"
+            android:background="@drawable/ic_arrow_back"
+            />
+
+        <View
+            android:id="@+id/viewLine"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ivBack"
+            android:background="@android:color/black"/>
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/viewLine"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            tools:text="标题"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tvPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:text="3/9"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:background="@drawable/shape_green_bg"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

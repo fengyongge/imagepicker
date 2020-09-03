@@ -1,12 +1,9 @@
 package com.zzti.fengyongge.imagepicker;
 
 import android.os.Bundle;
-
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.StringUtils;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,7 +13,7 @@ import java.util.List;
  */
 public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements PhotoSelectorActivity.OnLocalReccentListener {
 	private PhotoSelectorDomain photoSelectorDomain;
-	private boolean isSave;//是否保存图片
+	private boolean isSave;
 
 
 	@Override
@@ -26,28 +23,22 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 		init(getIntent().getExtras());
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void init(Bundle extras) {
-		if (extras == null)
+		if (extras == null){
 			return;
-
-		isSave = extras.getBoolean("isSave",false);
-
-		if (extras.containsKey("photos")) { // 预览图片，选择需要的图片
-
-			this.photos = (List<PhotoModel>) extras.getSerializable("photos");
-			this.current = extras.getInt("position", 0);
-
-			if(isSave){ // 是否保存（一般保存网络图片，本地图片只能查看）
+		}
+		isSave = extras.getBoolean(ImagePickerInstance.IS_SAVE,false);
+		if (extras.containsKey(ImagePickerInstance.PHOTOS)) {
+			this.photos = (List<PhotoModel>) extras.getSerializable(ImagePickerInstance.PHOTOS);
+			this.current = extras.getInt(ImagePickerInstance.POSITION, 0);
+			if(isSave){
 				bindData(true);
-				updatePercent();
 			}else{
 				bindData(false);
 			}
-
-
-		} else if (extras.containsKey("album")) { // 点击图片查看
-			String albumName = extras.getString("album"); // 相册
+			updatePercent(current,photos.size());
+		} else if (extras.containsKey("album")) {
+			String albumName = extras.getString("album");
 			this.current = extras.getInt("position");
 			if (!StringUtils.isNull(albumName) && albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)) {
 				photoSelectorDomain.getReccent(this);
@@ -58,11 +49,16 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 	}
 
 
+	/**
+	 * 图库图片预览
+	 * @param photos
+	 */
 	@Override
 	public void onPhotoLoaded(List<PhotoModel> photos) {
 		this.photos = photos;
-		updatePercent();
-		bindData(false); // 更新界面
+		//绑定数据，更新展示张数，不可少
+		bindData(false);
+		updatePercent(current,photos.size());
 	}
 
 

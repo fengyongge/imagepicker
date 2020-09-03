@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

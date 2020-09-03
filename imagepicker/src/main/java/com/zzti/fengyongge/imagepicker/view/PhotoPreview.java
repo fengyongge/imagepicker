@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.zzti.fengongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
+import com.zzti.fengyongge.imagepicker.util.LogUtils;
 
 import java.util.logging.Logger;
 
@@ -46,8 +47,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				ImageUtils.loadImage(cxt, path);
+				ImageUtils.downloadImage(cxt, path);
 				Toast.makeText(cxt, "保存成功", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -62,20 +62,28 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 		this(context);
 	}
 
-	public void loadImage(PhotoModel photoModel, Boolean is_save) {
 
+	public void loadImage(PhotoModel photoModel, Boolean is_save) {
 		if (is_save) {
 			save_bt.setVisibility(View.VISIBLE);
-			loadImage(photoModel.getOriginalPath());
 		} else {
 			save_bt.setVisibility(View.GONE);
+		}
+
+		//根据是否是网络图片，调用不同展示
+		if(photoModel.getOriginalPath().contains("http")||photoModel.getOriginalPath().contains("https")){
+			loadImage(photoModel.getOriginalPath());
+		}else{
 			loadImage("file://" + photoModel.getOriginalPath());
 		}
 
 	}
 
+	/** 加载图片 */
 	private void loadImage(String path) {
 		this.path = path;
+		LogUtils.log("path"+path);
+
 		ImageLoader.getInstance().loadImage(path,
 				new SimpleImageLoadingListener() {
 					@Override
@@ -84,6 +92,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 						pbLoading.setVisibility(View.GONE);
 						loadedBitamap = loadedImage;
 						ivContent.setImageBitmap(loadedImage);
+						LogUtils.log("加载成功");
 					}
 
 					@Override
@@ -92,6 +101,7 @@ public class PhotoPreview extends LinearLayout implements OnClickListener {
 						ivContent.setImageDrawable(getResources().getDrawable(
 								R.drawable.ic_picture_loadfailed));
 						pbLoading.setVisibility(View.GONE);
+						LogUtils.log("加载失败");
 					}
 				});
 	}

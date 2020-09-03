@@ -2,38 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <LinearLayout
+
+
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvAddPic"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="添加图片"
-            android:layout_marginTop="20dp"
-            />
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btAddPic"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="添加图片" />
+
+            <Button
+                android:id="@+id/btPreView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:text="预览图片(网络)" />
 
 
-        <TextView
-            android:id="@+id/tvPreView"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="预览网络图片"
-            />
+        </LinearLayout>
 
 
-    </LinearLayout>
-
+    </ScrollView>
 
 
 </LinearLayout>

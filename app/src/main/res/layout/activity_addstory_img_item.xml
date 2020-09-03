@@ -12,15 +12,16 @@
         android:layout_alignParentRight="true"
         android:layout_margin="5dp"
         android:clickable="true"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop"
+        />
 
     <ImageView
         android:id="@+id/delete_IV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="4dp"
-        android:background="@drawable/iv_delete_red" />
+        android:background="@drawable/iv_delete" />
 
     <LinearLayout
         android:id="@+id/LL"

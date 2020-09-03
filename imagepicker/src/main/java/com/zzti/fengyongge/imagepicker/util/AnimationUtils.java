@@ -12,7 +12,7 @@ import android.view.animation.TranslateAnimation;
 /**
  * Created by fengyongge on 2016/5/24
  */
-public class AnimationUtils implements AnimationListener {
+public final class AnimationUtils implements AnimationListener {
 
 	private Animation animation;
 	private OnAnimationEndListener animationEndListener; // 动画完成监听器
