@@ -80,19 +80,9 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
-            Intent data = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("photos", imagePathList);
-            data.putExtras(bundle);
-            setResult(RESULT_OK, data);
-            isTakePhoto = false;
-            finish();
+            successCallBack();
         }
-
     };
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,38 +218,62 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
             finish();
         } else {
             imagePathList.clear();
-            new Thread() {
-                private String cropImage;
-
-                @Override
-                public void run() {
-                    for (int i = 0; i < selected.size(); i++) {
-                         Bitmap handlerBitmap;
-                        //防止拍照图片角度发生变化(三星)
-                        int degree = ImageUtils.getBitmapDegree(selected.get(i).getOriginalPath());
-                        if(degree!=0){
-                            Bitmap tempBitmap = BitmapFactory.decodeFile(selected.get(i).getOriginalPath());
-                            handlerBitmap = ImageUtils.rotateBitmapByDegree(tempBitmap,degree);
-                        }else{
-                            //压缩处理
-                            handlerBitmap = ImageUtils.getImage(selected.get(i).getOriginalPath());
-                        }
-                        //防止oom进行bitmap压缩处理
-                        cropImage = ImageUtils.getCropImagePath(handlerBitmap);
-                        if (StringUtils.isNotEmpty(cropImage)) {
-                            imagePathList.add(cropImage);
-                        }
-                        //拍照的图片，刷新图库
-                        if(isTakePhoto){
-                            FileUtils.updateGallery(PhotoSelectorActivity.this,takeImageFile);
-                        }
-                    }
-                    handler.sendEmptyMessage(0);
+            //拍照和图库选择分开处理
+            if(isTakePhoto) {
+                String cropImage = handlerImage(selected.get(0).getOriginalPath());
+                if (StringUtils.isNotEmpty(cropImage)) {
+                    imagePathList.add(cropImage);
                 }
-            }.start();
+                FileUtils.updateGallery(PhotoSelectorActivity.this, takeImageFile);
+                successCallBack();
+            }else{
+                new Thread() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < selected.size(); i++) {
+                            String cropImage = handlerImage(selected.get(i).getOriginalPath());
+                            if (StringUtils.isNotEmpty(cropImage)) {
+                                imagePathList.add(cropImage);
+                            }
+                        }
+                        handler.sendEmptyMessage(0);
+                    }
+                }.start();
+            }
         }
     }
 
+    /**
+     * 图片处理
+     */
+    String handlerImage(String originalPath){
+        Bitmap handlerBitmap;
+        //防止拍照图片角度发生变化(三星)
+        int degree = ImageUtils.getBitmapDegree(originalPath);
+        if(degree!=0){
+            Bitmap tempBitmap = BitmapFactory.decodeFile(originalPath);
+            handlerBitmap = ImageUtils.rotateBitmapByDegree(tempBitmap,degree);
+        }else{
+            //压缩处理
+            handlerBitmap = ImageUtils.getImage(originalPath);
+        }
+        //防止oom进行bitmap压缩处理
+       String cropImage = ImageUtils.getCropImagePath(handlerBitmap);
+        return cropImage;
+    }
+
+    /**
+     * 将选择的数据返回给用户
+     */
+    void successCallBack(){
+        Intent data = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("photos", imagePathList);
+        data.putExtras(bundle);
+        setResult(RESULT_OK, data);
+        isTakePhoto = false;
+        finish();
+    }
 
 
     /**
