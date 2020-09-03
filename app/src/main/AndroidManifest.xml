@@ -37,7 +37,7 @@
         <activity android:name="com.zzti.fengyongge.imagepickersample.AddPicActivity" />
         <activity android:name="com.zzti.fengyongge.imagepickersample.PreViewActivity" />
 
-        <!-- 引入imagepicker时需要注册的activity -->
+        <!-- 引入imagepicker时需要注册的activity 分别为预览图片和选择图片-->
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity" />
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity" />
 

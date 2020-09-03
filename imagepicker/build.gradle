@@ -1,4 +1,10 @@
 apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'
+ext{
+    PUBLISH_GROUP_ID = 'com.zzti.fengyongge'
+    PUBLISH_ARTIFACT_ID = 'imagepicker'
+    PUBLISH_VERSION = '1.4.0'
+}
 
 android {
     compileSdkVersion 28
@@ -23,6 +29,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'pub.devrel:easypermissions:3.0.0'
-
 }
 
+//publish {
+//    userOrg = '917386389@qq.com'    //bintray.com用户名
+//    groupId = 'com.zzti.fengyongge'    //jcenter上的路径
+//    artifactId = 'imagepicker'    //自己的maven上添加的包名
+//    publishVersion = '1.4.0'    //版本号
+//    desc = 'imagepicker'    //描述
+//    website = 'https://github.com/fengyongge/imagepicker'    //网站，不重要
+//}
+
+// ./gradlew clean build bintrayUpload -PbintrayUser=username -PbintrayKey=APIKey -PdryRun=false
+
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
