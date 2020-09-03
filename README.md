@@ -1,6 +1,6 @@
 # imagepicker(图片选择器)
 ## 图片选择器简介
-imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.0](https://github.com/fengyongge/imagepicker)。
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.1](https://github.com/fengyongge/imagepicker)。
 
 * 从相册里面选择图片或者拍照获取照片
 * 浏览选择的本地或者网络图片
