@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.zzti.fengongge.imagepicker">
+    package="com.zzti.fengyongge.imagepicker">
 
 
     <!--在sdcard中创建/删搜索除文件的权限 -->
