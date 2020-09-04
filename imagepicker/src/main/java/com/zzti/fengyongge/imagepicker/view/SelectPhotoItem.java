@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
-import com.zzti.fengongge.imagepicker.R;
+import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 
 import java.util.Random;

@@ -3,7 +3,6 @@ package com.zzti.fengyongge.imagepicker.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,12 +14,11 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.zzti.fengongge.imagepicker.R;
+import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
 import com.zzti.fengyongge.imagepicker.util.LogUtils;
 
-import java.util.logging.Logger;
 
 
 public class PhotoPreview extends LinearLayout implements OnClickListener {

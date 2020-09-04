@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.zzti.fengongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.adapter.AlbumAdapter;
 import com.zzti.fengyongge.imagepicker.adapter.PhotoSelectorAdapter;
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
@@ -38,8 +37,6 @@ import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
