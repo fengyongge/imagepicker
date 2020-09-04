@@ -3,7 +3,7 @@
 imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，[开源地址](https://github.com/fengyongge/imagepicker)。
 
 
-v1.4.1(2020/9/3)
+v1.4.2(2020/9/3)
 -----------------
 1. 修复所有Issues
 
