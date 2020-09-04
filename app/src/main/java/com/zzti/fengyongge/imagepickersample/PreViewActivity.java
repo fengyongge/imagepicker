@@ -11,11 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zzti.fengongge.imagepickersample.R;
 import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
-import com.zzti.fengyongge.imagepicker.PhotoPreviewActivity;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 import com.zzti.fengyongge.imagepickersample.model.TestBean;
 import com.zzti.fengyongge.imagepickersample.view.CustomImageView;
 import com.zzti.fengyongge.imagepickersample.view.NineGridlayout;

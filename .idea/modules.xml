@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Users-fengyongge-github-imagepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/Users-fengyongge-github-imagepicker.iml" group="imagepicker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/imagepicker/Users-fengyongge-github-imagepicker-imagepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/imagepicker/Users-fengyongge-github-imagepicker-imagepicker.iml" group="imagepicker/imagepicker" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fengyongge-github-imagepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/fengyongge-github-imagepicker.iml" group="imagepicker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/fengyongge-github-imagepicker-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/fengyongge-github-imagepicker-app.iml" group="imagepicker/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/imagepicker/fengyongge-github-imagepicker-imagepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/imagepicker/fengyongge-github-imagepicker-imagepicker.iml" group="imagepicker/imagepicker" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/github-imagepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/github-imagepicker.iml" group="imagepicker" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/github-imagepicker-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/github-imagepicker-app.iml" group="imagepicker/app" />

@@ -15,10 +15,8 @@ import android.widget.ListAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.zzti.fengongge.imagepickersample.R;
 import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.CommonUtils;
 import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepickersample.model.UploadGoodsBean;
 import com.zzti.fengyongge.imagepickersample.utils.Config;

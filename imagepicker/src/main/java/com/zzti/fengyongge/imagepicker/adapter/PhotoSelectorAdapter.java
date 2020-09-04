@@ -7,9 +7,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.zzti.fengongge.imagepicker.R;
+import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
