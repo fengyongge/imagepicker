@@ -11,15 +11,12 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepickersample.model.UploadGoodsBean;
-import com.zzti.fengyongge.imagepickersample.utils.Config;
 import com.zzti.fengyongge.imagepickersample.utils.SizeUtils;
 import com.zzti.fengyongge.imagepickersample.view.MyGridView;
 
@@ -43,7 +40,7 @@ public class AddPicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pic);
 
-        Config.ScreenMap = Config.getScreenSize(this, this);
+//        Config.ScreenMap = Config.getScreenSize(this, this);
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         screen_widthOffset = (display.getWidth() - (3 * SizeUtils.dp2px(2))) / 3;
@@ -90,14 +87,11 @@ public class AddPicActivity extends AppCompatActivity {
             convertView.setLayoutParams(param);
             if (imageList.get(position) == null) {
                 holder.delete_IV.setVisibility(View.GONE);
-
-                ImageLoader.getInstance().displayImage("drawable://" + R.drawable.iv_add_the_pic, holder.add_IB);
-
+                Glide.with(AddPicActivity.this).load(R.drawable.iv_add_the_pic).into(holder.add_IB);
                 holder.add_IB.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
-
                         int limit = 9 - (imageList.size() - 1);
                         ImagePickerInstance.getInstance().photoSelect(AddPicActivity.this,limit,true,requestCodeNum);
                     }
@@ -105,7 +99,7 @@ public class AddPicActivity extends AppCompatActivity {
 
             } else {
 
-                ImageLoader.getInstance().displayImage("file://" + imageList.get(position).getUrl(), holder.add_IB);
+                Glide.with(AddPicActivity.this).load(imageList.get(position).getUrl()).into(holder.add_IB);
 
                 holder.delete_IV.setOnClickListener(new View.OnClickListener() {
                     private boolean is_addNull;

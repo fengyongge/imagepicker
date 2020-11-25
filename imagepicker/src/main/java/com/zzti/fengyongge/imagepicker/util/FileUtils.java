@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
-
-import com.zzti.fengyongge.imagepicker.ImagePickerInstance;
-import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,9 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 
 /**
  * @author fengyongge
@@ -40,8 +34,10 @@ public final class FileUtils
 
     public static void init()
     {
-        SDCARD_PAHT = Environment.getExternalStorageDirectory().getPath();// SD卡路径
-        LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();// 本地路径,即/data/data/目录下的程序私有目录
+        // SD卡路径
+        SDCARD_PAHT = Environment.getExternalStorageDirectory().getPath();
+        // 本地路径,即/data/data/目录下的程序私有目录
+        LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
@@ -165,12 +161,10 @@ public final class FileUtils
 
     /**
      * 从一个数量流里读取数据,返回以byte数组形式的数据。
-     * </br></br>
      * 需要注意的是，如果这个方法用在从本地文件读取数据时，一般不会遇到问题，但如果是用于网络操作，就经常会遇到一些麻烦(available()方法的问题)。所以如果是网络流不应该使用这个方法。
      * @param in
      *            要读取的输入流
      * @return
-     * @throws IOException
      */
     public static byte[] readInputStream(InputStream in)
     {
@@ -329,10 +323,6 @@ public final class FileUtils
     }
 
 
-
-
-    //-------------------------------------------------------------------------------------------------
-
     /**
      * 删除文件路径
      * @param sPath
@@ -358,7 +348,6 @@ public final class FileUtils
      */
     public static boolean deleteFile(String sPath) {
         File file = new File(sPath);
-        LogUtils.log("删除文件路径"+sPath);
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists()) {
             file.delete();
@@ -369,10 +358,7 @@ public final class FileUtils
 
     /**
      * 删除目录（文件夹）以及目录下的文件
-     *
-     * @param sPath
-     *            被删除目录的文件路径
-     * @return 目录删除成功返回true，否则返回false
+     *  @param sPath 被删除目录的文件路径,目录删除成功返回true，否则返回false
      */
     public static void deleteDirectory(String sPath) {
         File dirFile = new File(sPath);
@@ -421,17 +407,7 @@ public final class FileUtils
         }
     }
 
-    /**
-     * 获取图片命名
-     * @param prefix
-     * @param suffix
-     * @return
-     */
-    public static String getCharacterAndNumber(String prefix, String suffix) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
-        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
-        return filename;
-    }
+
 
 
 }

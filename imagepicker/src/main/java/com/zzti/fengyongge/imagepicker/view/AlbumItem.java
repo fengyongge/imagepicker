@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.zzti.fengyongge.imagepicker.ImageloderListener.Imageloder;
 import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 
@@ -37,7 +37,7 @@ public class AlbumItem extends LinearLayout {
 
 	/** 设置相册封面 */
 	public void setAlbumImage(String path) {
-		ImageLoader.getInstance().displayImage("file://" + path, ivAlbum);
+		Imageloder.getInstance().loadImageUrl("file://" + path, ivAlbum);
 	}
 
 	/** 初始化 */
@@ -57,10 +57,11 @@ public class AlbumItem extends LinearLayout {
 	}
 
 	public void isCheck(boolean isCheck) {
-		if (isCheck)
+		if (isCheck){
 			ivIndex.setVisibility(View.VISIBLE);
-		else
+		} else {
 			ivIndex.setVisibility(View.GONE);
+		}
 	}
 
 }

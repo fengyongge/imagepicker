@@ -14,11 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.zzti.fengyongge.imagepicker.ImageloderListener.Imageloder;
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -95,7 +96,7 @@ public class SelectPhotoItem extends LinearLayout implements OnCheckedChangeList
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				ImageLoader.getInstance().displayImage("file://" + photo.getOriginalPath(), ivPhoto);
+				Imageloder.getInstance().loadImageUrl("file://" + photo.getOriginalPath(),ivPhoto);
 			}
 		}, new Random().nextInt(10));
 	}

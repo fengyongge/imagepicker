@@ -16,9 +16,10 @@ import java.util.List;
  * describe
  * 对外API
  * @author fengyongge(fengyongge98@gmail.com)
- * @version
- * @date 2020/7/26
+ * @date 2020/09/08
+ * GitHub:https://github.com/fengyongge/imagepicker
  */
+
 public class ImagePickerInstance {
 
     public static final String PHOTOS = "photos";
@@ -26,7 +27,7 @@ public class ImagePickerInstance {
     public static final String IS_SAVE = "isSave";
     public static final String LIMIT = "limit";
     public static final String IS_SHOW_CAMERA = "isShowCamera";
-    private static ImagePickerInstance mInstance;
+    private static volatile ImagePickerInstance mInstance;
 
     private ImagePickerInstance() {
 

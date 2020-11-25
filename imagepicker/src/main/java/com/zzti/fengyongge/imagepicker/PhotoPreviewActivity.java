@@ -3,13 +3,13 @@ package com.zzti.fengyongge.imagepicker;
 import android.os.Bundle;
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import java.util.List;
 
-
 /**
- * Created by fengyongge on 2016/5/24
- * 图片预览
+ * describe 图片预览
+ * @author fengyongge(fengyongge98@gmail.com)
+ * @date 2016/5/24
+ * GitHub:https://github.com/fengyongge/imagepicker
  */
 public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements PhotoSelectorActivity.OnLocalReccentListener {
 	private PhotoSelectorDomain photoSelectorDomain;
@@ -40,7 +40,7 @@ public class PhotoPreviewActivity extends BasePhotoPreviewActivity implements Ph
 		} else if (extras.containsKey("album")) {
 			String albumName = extras.getString("album");
 			this.current = extras.getInt("position");
-			if (!StringUtils.isNull(albumName) && albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)) {
+			if (albumName!=null && albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)) {
 				photoSelectorDomain.getReccent(this);
 			} else {
 				photoSelectorDomain.getAlbum(albumName, this);

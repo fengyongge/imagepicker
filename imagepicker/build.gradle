@@ -1,18 +1,14 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
-ext{
-    PUBLISH_GROUP_ID = 'com.zzti.fengyongge'
-    PUBLISH_ARTIFACT_ID = 'imagepicker'
-    PUBLISH_VERSION = '1.4.2'
-}
+apply plugin: 'com.github.panpf.bintray-publish'
+
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -27,19 +23,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation "androidx.core:core-ktx:+"
+}
+repositories {
+    mavenCentral()
 }
 
-//publish {
-//    userOrg = '917386389@qq.com'    //bintray.com用户名
-//    groupId = 'com.zzti.fengyongge'    //jcenter上的路径
-//    artifactId = 'imagepicker'    //自己的maven上添加的包名
-//    publishVersion = '1.4.0'    //版本号
-//    desc = 'imagepicker'    //描述
-//    website = 'https://github.com/fengyongge/imagepicker'    //网站，不重要
-//}
 
-// ./gradlew clean build bintrayUpload -PbintrayUser=username -PbintrayKey=APIKey -PdryRun=false
-//        ./gradlew clean build generateRelease
-apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+
+publish {
+    userOrg = '917386389'    //bintray.com用户名
+    repoName = 'androidlibs' //bintray 仓库名
+    groupId = 'com.zzti.fengyongge'    //jcenter上的路径
+    artifactId = 'imagepicker'    //自己的maven上添加的包名
+    publishVersion = '1.4.4'    //版本号
+    desc = 'imagepicker'    //描述
+    website = 'https://github.com/fengyongge/imagepicker'    //网站，不重要
+}
+// ./gradlew clean build bintrayUpload -PbintrayUser=917386389 -PbintrayKey=f6fb4875b881a20dcb08c5d44eb9de72bcf66b85 -PdryRun=false
+

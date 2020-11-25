@@ -1,6 +1,6 @@
 # imagepicker(图片选择器)
 ## 图片选择器简介
-imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.2](https://github.com/fengyongge/imagepicker)。
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.4](https://github.com/fengyongge/imagepicker)。
 
 * 从相册里面选择图片或者拍照获取照片
 * 浏览选择的本地或者网络图片
@@ -14,7 +14,7 @@ imagepicker是一款用于在Android设备上获取照片（拍照或从相册�
 ## 如何引用
 * 配置gradle依赖
 ```java
-implementation 'com.zzti.fengyongge:imagepicker:1.4.2'
+implementation 'com.zzti.fengyongge:imagepicker:1.4.4'
 ```
 
 * 配置清单文件所需activity和provider权限
@@ -24,31 +24,7 @@ implementation 'com.zzti.fengyongge:imagepicker:1.4.2'
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity" />
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity" />
 
-   <!-- targetSDKVersion >= 24时才需要添加这个provider。
-        provider的authorities属性的值为${applicationId}.fileprovider，
-        请开发者根据自己的${applicationId}来设置这个值 -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
 ```
-* 在项目结构下的res目录下添加一个xml文件夹，再新建一个file_paths.xml的文件，文件内容如下：
-```java
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-     <paths>
-          <!--对应外部内存卡根目录：Environment.getExternalStorageDirectory()-->
-          <external-path name="external-path" path="" />
-     </paths>
-</resources>
-```
-
 
 ## 如何使用
 * 拍照或者从图库选择图片

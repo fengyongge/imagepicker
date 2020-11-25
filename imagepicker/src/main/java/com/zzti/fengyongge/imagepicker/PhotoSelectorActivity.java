@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,10 +20,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import com.zzti.fengyongge.imagepicker.adapter.AlbumAdapter;
 import com.zzti.fengyongge.imagepicker.adapter.PhotoSelectorAdapter;
 import com.zzti.fengyongge.imagepicker.control.PhotoSelectorDomain;
@@ -30,10 +30,10 @@ import com.zzti.fengyongge.imagepicker.model.AlbumModel;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
 import com.zzti.fengyongge.imagepicker.util.AnimationUtils;
 import com.zzti.fengyongge.imagepicker.util.CommonUtils;
+import com.zzti.fengyongge.imagepicker.util.CompressUtils;
 import com.zzti.fengyongge.imagepicker.util.FileProviderUtil;
 import com.zzti.fengyongge.imagepicker.util.FileUtils;
 import com.zzti.fengyongge.imagepicker.util.ImageUtils;
-import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.io.File;
@@ -44,11 +44,13 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-
 /**
- * Created by fengyongge on 2016/5/24
- * 图片选择
+ * describe 图片选择
+ * @author fengyongge(fengyongge98@gmail.com)
+ * @date 2016/5/24
+ * GitHub:https://github.com/fengyongge/imagepicker
  */
+
 public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.onItemClickListener, SelectPhotoItem.onPhotoItemCheckedListener,
         OnItemClickListener, OnClickListener
         , EasyPermissions.PermissionCallbacks {
@@ -88,7 +90,6 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
         setContentView(R.layout.activity_photoselector);
         initView();
         initOnclick();
-        initImageLoader();
         writeTask();
     }
 
@@ -125,25 +126,6 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
 
 
-    public void initImageLoader() {
-        DisplayImageOptions defaultDisplayImageOptions = new DisplayImageOptions.Builder()
-                // 调整图片方向
-                .considerExifParams(true)
-                // 载入之前重置ImageView
-                .resetViewBeforeLoading(true)
-                // 载入时图片设置为黑色
-                .showImageOnLoading(R.drawable.ic_picture_loading)
-                // 加载失败时显示的图片
-                .showImageOnFail(R.drawable.ic_picture_loadfailed)
-                // 载入之前的延迟时间
-                .delayBeforeLoading(0)
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .defaultDisplayImageOptions(defaultDisplayImageOptions).memoryCacheExtraOptions(480, 800)
-                .threadPoolSize(5).build();
-        ImageLoader.getInstance().init(config);
-    }
-
 
     public void showPic() {
         photoAdapter = new PhotoSelectorAdapter(getApplicationContext(), new ArrayList<PhotoModel>(),
@@ -175,6 +157,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
         }
     }
 
+
     /**
      * 拍照
      */
@@ -184,13 +167,10 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
         // 下面这句指定调用相机拍照后的照片存储的路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 FileProviderUtil.getFileUri(PhotoSelectorActivity.this,
-                        takeImageFile,
-                        this.getPackageName() + ".fileprovider"));
+                        takeImageFile, this.getPackageName() + ".fileprovider"));
         startActivityForResult(intent, CANERA_REQUEST_CODE);
         isTakePhoto = true;
     }
-
-
 
 
     @Override
@@ -218,7 +198,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
             //拍照和图库选择分开处理
             if(isTakePhoto) {
                 String cropImage = handlerImage(selected.get(0).getOriginalPath());
-                if (StringUtils.isNotEmpty(cropImage)) {
+                if (cropImage!=null) {
                     imagePathList.add(cropImage);
                 }
                 FileUtils.updateGallery(PhotoSelectorActivity.this, takeImageFile);
@@ -229,7 +209,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
                     public void run() {
                         for (int i = 0; i < selected.size(); i++) {
                             String cropImage = handlerImage(selected.get(i).getOriginalPath());
-                            if (StringUtils.isNotEmpty(cropImage)) {
+                            if (cropImage!=null) {
                                 imagePathList.add(cropImage);
                             }
                         }
@@ -242,22 +222,25 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
 
     /**
      * 图片处理
+     *
+     * 如果图片角度有问题，先旋转图片角度，然后进行压缩；否则直接压缩在返回
+     *
      */
     String handlerImage(String originalPath){
         Bitmap handlerBitmap;
         //防止拍照图片角度发生变化(三星)
         int degree = ImageUtils.getBitmapDegree(originalPath);
         if(degree!=0){
-            Bitmap tempBitmap = BitmapFactory.decodeFile(originalPath);
-            handlerBitmap = ImageUtils.rotateBitmapByDegree(tempBitmap,degree);
+            //旋转角度并压缩图片
+            Bitmap rotateBitmap = ImageUtils.rotateBitmapByDegree(BitmapFactory.decodeFile(originalPath),degree);
+            handlerBitmap = CompressUtils.compressBitmapDecodeFile(CompressUtils.getCropImagePath(rotateBitmap));
         }else{
-            //压缩处理
-            handlerBitmap = ImageUtils.getImage(originalPath);
+            handlerBitmap = CompressUtils.compressBitmapDecodeFile(originalPath);
         }
-        //防止oom进行bitmap压缩处理
-       String cropImage = ImageUtils.getCropImagePath(handlerBitmap);
+        String cropImage = CompressUtils.getCropImagePath(handlerBitmap);
         return cropImage;
     }
+
 
     /**
      * 将选择的数据返回给用户

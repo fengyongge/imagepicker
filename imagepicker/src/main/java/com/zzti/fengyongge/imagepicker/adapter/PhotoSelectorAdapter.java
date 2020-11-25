@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.zzti.fengyongge.imagepicker.R;
 import com.zzti.fengyongge.imagepicker.model.PhotoModel;
-import com.zzti.fengyongge.imagepicker.util.StringUtils;
 import com.zzti.fengyongge.imagepicker.view.SelectPhotoItem;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 		SelectPhotoItem item = null;
 		RelativeLayout rlCamera = null;
 		// 当时第一个时，显示按钮
-		if (position == 0 && StringUtils.isNull(models.get(position).getOriginalPath())) {
+		if (position == 0 && models.get(position).getOriginalPath()==null) {
 			if (convertView == null || !(convertView instanceof RelativeLayout)) {
 				rlCamera = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_camera, null);
 				rlCamera.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));

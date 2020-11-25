@@ -20,6 +20,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
+        <!-- 适配targetSDKVersion >= 24时，Android 7.0行为变更，适配File Provider -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
     </application>
 
 </manifest>

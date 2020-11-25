@@ -8,7 +8,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import androidx.appcompat.widget.AppCompatImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+
+import com.bumptech.glide.Glide;
 
 
 public class CustomImageView extends AppCompatImageView {
@@ -68,7 +69,7 @@ public class CustomImageView extends AppCompatImageView {
         if (!TextUtils.isEmpty(url)) {
             this.url = url;
             if (isAttachedToWindow) {
-                ImageLoader.getInstance().displayImage( url, this);
+                Glide.with(getContext()).load(url).into(this);
             }
         }
     }

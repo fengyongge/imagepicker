@@ -76,7 +76,7 @@ public class NineGridlayout extends ViewGroup {
 				@Override
 				public void onClick(View arg0) {
                     //展示多张图片
-                    ImagePickerInstance.getInstance().photoPreview(context,listData,(Integer)arg0.getTag(),true);
+                    ImagePickerInstance.getInstance().photoPreview(context,listData,(Integer)arg0.getTag(),false);
                 }
 			});
             childrenView.setOnLongClickListener(new OnLongClickListener() {

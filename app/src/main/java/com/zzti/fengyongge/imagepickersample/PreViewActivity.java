@@ -90,10 +90,10 @@ public class PreViewActivity extends AppCompatActivity {
                     public void onClick(View arg0) {
                         List<PhotoModel> tempList = new ArrayList<PhotoModel>();
                         for (int i = 0; i < dataList.get(position).getPic().size(); i++) {
-                            PhotoModel photoModel = new PhotoModel();
-                            photoModel.setOriginalPath(dataList.get(position).getPic().get(i));
-                            tempList.add(photoModel);
-                        }
+                        PhotoModel photoModel = new PhotoModel();
+                        photoModel.setOriginalPath(dataList.get(position).getPic().get(i));
+                        tempList.add(photoModel);
+                    }
                         ImagePickerInstance.getInstance().photoPreview(PreViewActivity.this,tempList,position,false);
                     }
                 });
