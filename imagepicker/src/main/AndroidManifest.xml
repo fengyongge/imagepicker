@@ -22,7 +22,7 @@
 
         <!-- 适配targetSDKVersion >= 24时，Android 7.0行为变更，适配File Provider -->
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name=".ImagePickerFileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -38,7 +38,7 @@ publish {
     repoName = 'androidlibs' //bintray 仓库名
     groupId = 'com.zzti.fengyongge'    //jcenter上的路径
     artifactId = 'imagepicker'    //自己的maven上添加的包名
-    publishVersion = '1.4.4'    //版本号
+    publishVersion = '1.4.5'    //版本号
     desc = 'imagepicker'    //描述
     website = 'https://github.com/fengyongge/imagepicker'    //网站，不重要
 }

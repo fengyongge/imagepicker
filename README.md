@@ -3,7 +3,7 @@
 ![Bintray](https://img.shields.io/bintray/dt/917386389/androidlibs/imagepicker)[![Download](https://api.bintray.com/packages/917386389/androidlibs/imagepicker/images/download.svg) ](https://bintray.com/917386389/androidlibs/imagepicker/_latestVersion)[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## 图片选择器简介
-imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.4](https://github.com/fengyongge/imagepicker)。
+imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.5](https://github.com/fengyongge/imagepicker)。
 
 * 从相册里面选择图片或者拍照获取照片
 * 浏览选择的本地或者网络图片
@@ -17,7 +17,7 @@ imagepicker是一款用于在Android设备上获取照片（拍照或从相册�
 ## 如何引用
 * 配置gradle依赖
 ```java
-implementation 'com.zzti.fengyongge:imagepicker:1.4.4'
+implementation 'com.zzti.fengyongge:imagepicker:1.4.5'
 ```
 
 * 配置清单文件所需activity和provider权限

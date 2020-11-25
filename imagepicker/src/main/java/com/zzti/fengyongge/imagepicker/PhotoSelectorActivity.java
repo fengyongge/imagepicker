@@ -425,7 +425,7 @@ public class PhotoSelectorActivity extends Activity implements SelectPhotoItem.o
             showPic();
         } else {
             // Ask for one permission
-            EasyPermissions.requestPermissions(this, getString(R.string.write),
+            EasyPermissions.requestPermissions(this, getString(R.string.write_permission),
                     WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
     }
