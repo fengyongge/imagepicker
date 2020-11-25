@@ -1,4 +1,7 @@
 # imagepicker(图片选择器)
+
+![Bintray](https://img.shields.io/bintray/dt/917386389/androidlibs/imagepicker)[![Download](https://api.bintray.com/packages/917386389/androidlibs/imagepicker/images/download.svg) ](https://bintray.com/917386389/androidlibs/imagepicker/_latestVersion)[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 ## 图片选择器简介
 imagepicker是一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、压缩图片的开源工具库，目前最新版本[V1.4.4](https://github.com/fengyongge/imagepicker)。
 
